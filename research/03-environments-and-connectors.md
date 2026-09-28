@@ -25,6 +25,10 @@
 - **CoreCraft** (Surge 2026, [2602.16179](https://arxiv.org/abs/2602.16179)): a simulated support org with 2,500+ entities; expert rubrics where every criterion must pass; training on it transferred to other benchmarks.
 - **EnterpriseClawBench** ([2606.23654](https://arxiv.org/abs/2606.23654)): reports harness × model, cost, runtime, and artifact quality rather than one score.
 
+## Direct prior art for synthetic SaaS tools
+
+**Backlot** ([brekkylab/backlot](https://github.com/brekkylab/backlot), about 280 GitHub stars in Sep 2026): "a local emulator for enterprise SaaS APIs", covering Slack, Gmail, and Google Drive. The closest open project to the connector layer; study it before building our own, and decide whether to build on it or position against it. *Not yet reviewed in depth.*
+
 ## Environment synthesis at scale
 
 AgentScaler ([2509.13311](https://arxiv.org/abs/2509.13311)) turns API clusters into read and write databases, so a tool is a database operation. EnvScaler ([2601.05808](https://arxiv.org/abs/2601.05808)) builds 191 code-backed environments with rule-based validators and avoids model simulation. SynthTools ([2511.09572](https://arxiv.org/abs/2511.09572)) filters out tools that can't be emulated reliably. EnvFactory ([2605.18703](https://arxiv.org/abs/2605.18703)): 85 verified stateful environments beat pipelines using five times more. **EnvSimBench** ([2605.07247](https://arxiv.org/abs/2605.07247)) finds the "state change cliff": models simulate unchanged state well and fail badly when several fields must change together.

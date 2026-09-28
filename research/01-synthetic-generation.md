@@ -35,6 +35,18 @@
 
 **Homogeneity.** Lexical, syntactic, and semantic diversity all decline through recursive generation ([2311.09807](https://arxiv.org/abs/2311.09807)). "Artificial Hivemind" (Jiang et al., NeurIPS 2025 best paper, [2510.22954](https://arxiv.org/abs/2510.22954)) finds strong repetition within one model and even stronger sameness across models. Switching vendors does not buy variety.
 
+## Generation versus verification
+
+Building a problem with the answer in hand is easier than solving it blind, and several lines of work exploit that asymmetry:
+
+- **Privileged information.** AutoBencher ([2407.08351](https://arxiv.org/abs/2407.08351)) lets the generator see retrieval results the evaluated model does not.
+- **Answer first.** Instruction backtranslation ([2308.06259](https://arxiv.org/abs/2308.06259)) writes the document, then the question it answers.
+- **Break what works.** SWE-smith ([2504.21798](https://arxiv.org/abs/2504.21798)) and R2E-Gym ([2504.07164](https://arxiv.org/abs/2504.07164)) start from passing code and introduce a known break, so the fix and its tests exist before the task does.
+- **Tasks with their own verifiers.** Self-Challenging Agents ([2506.01716](https://arxiv.org/abs/2506.01716)) have the model write a task together with the code that checks it.
+- **Oracle paths.** ARE ([2509.17158](https://arxiv.org/abs/2509.17158)) grades against an oracle's write actions; ToolSandbox ([2408.04682](https://arxiv.org/abs/2408.04682)) turns required intermediate states into milestones.
+
+The limit: items built to be hard carry more label error, not less. Humanity's Last Exam filtered against frontier models and still had about 30% of chemistry and biology answers questioned. The maker's answer must be re-derived independently before it counts.
+
 ## What this implies
 
 1. Seed from real structure; generate detail. Keep the rationale for every gold answer.

@@ -2,7 +2,9 @@
 
 **Worlds for evals. Built by agents, checked by everything else.**
 
-Demiurge is a design for a synthetic data engine. It builds believable company worlds (people, projects, timelines, and the messy files and tools they leave behind), turns them into evals and agent environments, and proves every piece is sound before anyone scores a model against it. Claude Code, or any agentic harness, does the making. Code, independent models, and people do the checking.
+Demiurge is a design for a synthetic data engine: realistic fake companies for testing AI agents, a flight simulator for agents doing office work, with an answer key. It builds believable company worlds (people, projects, timelines, and the messy files and tools they leave behind), turns them into evals and agent environments, and proves every piece is sound before anyone scores a model against it. Claude Code, or any agentic harness, does the making. Code, independent models, and people do the checking.
+
+**The premise:** it is easier to build a hard problem while holding the answer than to solve it blind. So every item is built backwards from its answer, and the maker's path becomes the golden trajectory. Independent solvers confirm the gold, add silver trajectories, and the rubric is written from both ([details](#47-ground-truth-by-construction)).
 
 > **Status: design only.** This repo holds the design and the research behind it, so the design can change quickly. No engine code yet. The research in [`research/`](research/) stands on its own and applies whichever design we pick.
 
@@ -32,20 +34,37 @@ The name is a working title. In Plato's *Timaeus*, the demiurge is the craftsman
 
 ## 1. First principles
 
+### The premise: build it backwards
+
+**It is easier to build a hard problem while holding the answer than to solve it from scratch without one.** A maker agent that constructs a task already knows its solution, because it made every step: it planted the fact, broke the code, or wrote the record the question depends on. A model under test starts blind. Demiurge is built on that asymmetry between generation and verification.
+
+It is well supported. AutoBencher gives the generator privileged information the tested model lacks; instruction backtranslation writes the document first and then the question it answers; SWE-smith breaks working code so the fix is known; planted discrepancies (in our own persona-artifact-factory) put a known contradiction into a file set and ask about it.
+
+The premise has three limits, and the design enforces each:
+
+1. **Knowing the answer is not the same as the answer being right.** A maker's gold can be wrong if the world is inconsistent, and items built to be hard fail audits more often, not less (Humanity's Last Exam). So gold is computed from the world graph and independently re-derived, never just asserted by the maker.
+2. **The maker's path is one valid path, not the only one.** The golden trajectory is a reference. Grading rests on the outcome, and trajectories are used to derive required checkpoints and forbidden actions, not to demand an exact sequence of steps.
+3. **Hard has to be realistically hard.** Obscurity, trick wording, and contradictions nobody could resolve are not difficulty. The realism, shortcut, and counter-argument gates exist for this.
+
+Section [4.7](#47-ground-truth-by-construction) shows how gold outcomes, golden and silver trajectories, and rubrics are produced.
+
+### The principles
+
 These come from the literature and practitioner canon in [`research/`](research/). Each is load-bearing for the design.
 
 1. **Trust is the product, and volume is cheap.** A model can write a thousand eval items in an afternoon, with reference answers that are quietly wrong. Audits of famous benchmarks keep finding it: about 59% of audited SWE-bench Verified failures had flawed tests, roughly 30% of Humanity's Last Exam chemistry and biology answers look wrong, and 6.5% of MMLU items are erroneous. Everything below exists to make an item trustworthy, and the receipts to prove it travel with the item.
-2. **The world comes first, and the documents are rendered from it.** Generate a typed, time-stamped graph of the company (people, clients, projects, contracts, decisions, events), then render every email, spreadsheet, and transcript from it. Gold answers are computed from the graph, not labeled by a model. (CorporateBench, Era by Eon, HERB, EntiGraph.)
-3. **Diversity has to be designed in.** Models converge on each other's outputs ("Artificial Hivemind", NeurIPS 2025), so switching generator vendors buys little. Diversity comes from structure: personas, roles, document types, audiences, and noise profiles, combined from a declared grid. (Persona Hub, DataMorgana, Cosmopedia.)
-4. **Real mess is copied deliberately.** Real company data is full of forwarded chains, stale versions, conflicting numbers, misfiled documents, half-filled CRM fields, and near-duplicates. Agents fail on exactly those. We study real artifacts to measure that mess, then apply it on purpose, and tag every piece of it in the graph so graders know it is there.
-5. **Separate the author from every judge.** The model that writes an item never approves it, and never grades it alone. LLM-built benchmarks rank their own author first ("When LLMs Benchmark Themselves", 2025). Generator, judges, and the model under test come from different families where possible, and results are reported across generators.
-6. **State lives in code. Language models write content.** Tools and connectors read and write a real, typed state store. A language model writes email bodies and document text at seed time, but never owns the state, because simulated state breaks as soon as several fields must change together (EnvSimBench's "state change cliff"). (AppWorld, τ-bench, ARE.)
-7. **Use the cheapest grader that can be right.** Schema checks, then graph consistency, state diffs, and tests. Then a jury of model judges from different families. Then people. A judge is itself a model with a test set, and its agreement with humans is reported.
-8. **People own the definition of quality.** Criteria drift as soon as you grade real outputs ("Who Validates the Validators?"). A domain expert writes and revises the rubric by grading samples, reviews the disagreement set, and calibrates every automated judge. Hard items get more human review, not less.
-9. **Difficulty is measured.** A panel of models from several labs attempts every item. Items that do not separate models, or that can be answered from a shortcut (the question alone, a single file), are dropped. Item response theory places each item on a scale.
-10. **Every claim carries error bars.** Report pass@k and pass^k over at least four trials, with clustered confidence intervals and a power check before saying one model beats another.
-11. **Contamination is a lifecycle.** Canary strings, semantic deduplication, public, held-out, and private splits, fresh seeds per release, and a published errata log.
-12. **Keep the pool, add to it.** Item pools are versioned and append-only, with human-sourced anchor items in every release, and full provenance on every item. (Accumulate, don't replace: Gerstgrasser et al. 2024.)
+2. **Construct backwards, verify forwards.** Every item is built from its answer: start from the end state or the fact, then compose the steps, the files, and the question that lead to it. The maker's construction is recorded as the golden trajectory. Then a separate solver, with and without the answer key, confirms the item is solvable and the gold is right.
+3. **The world comes first, and the documents are rendered from it.** Generate a typed, time-stamped graph of the company (people, clients, projects, contracts, decisions, events), then render every email, spreadsheet, and transcript from it. Gold answers are computed from the graph, not labeled by a model. (CorporateBench, Era by Eon, HERB, EntiGraph.)
+4. **Diversity has to be designed in.** Models converge on each other's outputs ("Artificial Hivemind", NeurIPS 2025), so switching generator vendors buys little. Diversity comes from structure: personas, roles, document types, audiences, and noise profiles, combined from a declared grid. (Persona Hub, DataMorgana, Cosmopedia.)
+5. **Real mess is copied deliberately.** Real company data is full of forwarded chains, stale versions, conflicting numbers, misfiled documents, half-filled CRM fields, and near-duplicates. Agents fail on exactly those. We study real artifacts to measure that mess, then apply it on purpose, and tag every piece of it in the graph so graders know it is there.
+6. **Separate the author from every judge.** The model that writes an item never approves it, and never grades it alone. LLM-built benchmarks rank their own author first ("When LLMs Benchmark Themselves", 2025). Generator, judges, and the model under test come from different families where possible, and results are reported across generators.
+7. **State lives in code. Language models write content.** Tools and connectors read and write a real, typed state store. A language model writes email bodies and document text at seed time, but never owns the state, because simulated state breaks as soon as several fields must change together (EnvSimBench's "state change cliff"). (AppWorld, τ-bench, ARE.)
+8. **Use the cheapest grader that can be right.** Schema checks, then graph consistency, state diffs, and tests. Then a jury of model judges from different families. Then people. A judge is itself a model with a test set, and its agreement with humans is reported.
+9. **People own the definition of quality.** Criteria drift as soon as you grade real outputs ("Who Validates the Validators?"). A domain expert writes and revises the rubric by grading samples, reviews the disagreement set, and calibrates every automated judge. Hard items get more human review, not less.
+10. **Difficulty is measured.** A panel of models from several labs attempts every item. Items that do not separate models, or that can be answered from a shortcut (the question alone, a single file), are dropped. Item response theory places each item on a scale.
+11. **Every claim carries error bars.** Report pass@k and pass^k over at least four trials, with clustered confidence intervals and a power check before saying one model beats another.
+12. **Contamination is a lifecycle.** Canary strings, semantic deduplication, public, held-out, and private splits, fresh seeds per release, and a published errata log.
+13. **Keep the pool, add to it.** Item pools are versioned and append-only, with human-sourced anchor items in every release, and full provenance on every item. (Accumulate, don't replace: Gerstgrasser et al. 2024.)
 
 ## 2. Scope
 
@@ -243,15 +262,16 @@ Gates decide whether an item is fit to exist. Graders score a model's attempt at
 flowchart TD
   I["Candidate item"] --> G1["Schema"]
   G1 --> G2["Graph consistency<br/>gold answer recomputes"]
-  G2 --> G3["Answerability<br/>and shortcut filter"]
-  G3 --> G4["Blind oracle<br/>an independent strong model agrees"]
+  G2 --> G2b["Golden trajectory replays<br/>and reaches the gold"]
+  G2b --> G3["Answerability<br/>and shortcut filter"]
+  G3 --> G4["Keyed solver<br/>reaches the gold with the answer key"]
   G4 --> G5["Counter-argument<br/>a skeptic cannot make the other case"]
   G5 --> G6["Realism"]
   G6 --> G7["Semantic novelty"]
-  G7 --> G8["Difficulty panel<br/>cross-lab, pass rate band, IRT"]
+  G7 --> G8["Blind solver panel<br/>cross-lab difficulty, IRT,<br/>successes become silver trajectories"]
   G8 --> G9["Gameability probe<br/>impossible variant must fail"]
   G9 --> OK[("accepted, with receipts")]
-  G1 & G2 & G3 & G4 & G5 & G6 & G7 & G8 & G9 -. fail .-> RP["repair failed gates only,<br/>bounded"] -. "over budget" .-> RJ[("rejected, logged")]
+  G1 & G2 & G2b & G3 & G4 & G5 & G6 & G7 & G8 & G9 -. fail .-> RP["repair failed gates only,<br/>bounded"] -. "over budget" .-> RJ[("rejected, logged")]
 ```
 
 Graders, in order of preference:
@@ -266,6 +286,61 @@ Graders, in order of preference:
 | Blind expert pairwise | Open-ended work product | GDPval |
 
 Every model judge ships with its own labeled validation set, its agreement with humans, and both answer orders tested.
+
+### 4.7 Ground truth by construction
+
+Four kinds of ground truth, produced in this order. Each is checked by someone other than the maker.
+
+| Ground truth | What it is | Where it comes from | Checked by |
+|---|---|---|---|
+| **Gold outcome** | The correct final answer or end state | Computed from the world graph (a query, or the expected state after the task) | Re-derived by code from the graph; for free text, a jury |
+| **Golden trajectory** | The maker's path from start to gold: the reads, writes, and decisions, in order | Recorded while constructing the item backwards | Replayed against the real environment to prove it reaches the gold outcome |
+| **Silver trajectories** | Successful runs by independent solvers | A **keyed solver** (given the answer key and graph) and **blind solvers** (a cross-lab panel, no key) | Graded by the gold outcome; only verified successes count as silver |
+| **Rubric** | Checkpoints, forbidden actions, and outcome criteria | Derived from what golden and silver trajectories share, and from what failed runs did wrong | A domain expert reviews and edits; judges are calibrated on it |
+
+```mermaid
+flowchart TD
+  W[("World graph")] --> END["Choose the end state or fact<br/>the answer comes first"]
+  END --> BK["Build backwards<br/>compose steps, plant files,<br/>write the question last"]
+  BK --> GO["Gold outcome<br/>computed from the graph"]
+  BK --> GT["Golden trajectory<br/>the maker's recorded path"]
+  GT --> RP{"Replay in the environment:<br/>reaches the gold?"}
+  RP -- no --> FIX["Fix the world or the item"] --> BK
+  RP -- yes --> KS["Keyed solver<br/>has the answer key"]
+  RP -- yes --> BS["Blind solver panel<br/>cross-lab, no key"]
+  KS --> KCHK{"Keyed solver reaches gold?"}
+  KCHK -- no --> AMB["Ambiguous or broken item:<br/>reject or repair"]
+  KCHK -- yes --> SIL["Silver trajectories"]
+  BS --> DIFF["Difficulty: panel solve rate"]
+  BS -- "verified successes" --> SIL
+  BS -- failures --> FM["Failure modes<br/>where blind solvers went wrong"]
+  GT & SIL --> RUB["Rubric<br/>shared checkpoints become milestones,<br/>failure modes become minefields"]
+  FM --> RUB
+  RUB --> HR["Expert review and edit"]
+  HR --> DONE[("Item with gold outcome,<br/>trajectories, rubric, receipts")]
+```
+
+How to read the two solvers:
+
+- **The keyed solver tests the item.** It holds the answer key. If it still cannot reach the gold outcome, the item is ambiguous, the world is inconsistent, or the tools cannot do what the task needs. It is a consistency check, not a difficulty measure.
+- **The blind panel tests the models.** Its solve rate is the difficulty. Its successes are extra valid paths (silver), which keep the rubric from punishing a route the maker did not take. Its failures show where the item actually bites, and become the rubric's forbidden actions and the next round's coordinates.
+
+How grading uses them:
+
+1. **Outcome first.** The gold outcome decides pass or fail wherever it can: an exact answer, or a state diff with a collateral-damage check.
+2. **Milestones second.** Checkpoints shared by the golden and all silver trajectories become required intermediate states (ToolSandbox's milestones). A checkpoint only one path used is not required.
+3. **Minefields always.** Actions no valid trajectory took and blind solvers did take harmfully (a wrong send, a destructive write) become forbidden.
+4. **Rubric judges only for free text**, using criteria written from the trajectories and edited by an expert.
+
+Per recipe:
+
+| Recipe | Gold outcome | Golden trajectory | Rubric emphasis |
+|---|---|---|---|
+| Ground-truth answer | Query on the graph | Which files a reader must open and in what order | Grounding: cites the right, current source |
+| Agentic decision | The right action (act, ask, stop), from the minimal pair's one differing fact | The reads that reveal the fact | Minefield: the harmful commit |
+| Environment task | Expected state after the task | Backward construction from the end state | Milestones and no collateral damage |
+| Deliverable | Required facts and structure, from the graph | The maker's outline and sources | Rubric tree, expert pairwise at the top |
+| Harness task | The spec's acceptance tests passing on the live app | A reference implementation, or a known-good harness run | End-to-end workflows, then trace checks |
 
 ## 5. The agentic loop every stage shares
 
