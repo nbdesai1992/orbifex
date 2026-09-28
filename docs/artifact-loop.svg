@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 340" width="1000" height="340" role="img" aria-label="The artifact quality loop. A maker agent writes a file. Six checks run in turn: valid, faithful, continuous, in voice, realistic, and novel, run by code and by a model other than the maker. Realistic fails because the file reads like a template. Only that check is sent back: the maker repairs the file, the realistic check passes on the second try, and the file is accepted with a receipt of every check.">
+<style>
+  .a { animation-duration: 14s; animation-iteration-count: infinite; animation-timing-function: ease-in-out; }
+  .sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .mono { font-family: SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+  .ink { fill: #ECE8E1; } .dim { fill: #8F96A3; } .bronze { fill: #D08C4A; } .green { fill: #7CC38C; } .red { fill: #E5484D; }
+  .card { fill: #1C1F27; stroke: #2E323D; stroke-width: 1.5; }
+  .scene { animation-name: scene; } @keyframes scene { 0%, 94% { opacity: 1; } 98.5%, 100% { opacity: 0; } }
+  .w1 { animation-name: w1; } @keyframes w1 { 0%, 3% { opacity: 0; } 6%, 100% { opacity: 1; } }
+  .w2 { animation-name: w2; } @keyframes w2 { 0%, 6% { opacity: 0; } 9%, 100% { opacity: 1; } }
+  .w3 { animation-name: w3; } @keyframes w3 { 0%, 9% { opacity: 0; } 12%, 100% { opacity: 1; } }
+  /* chips go green in turn; the realism chip fails, is repaired, then passes */
+  .g1 { animation-name: g1; } @keyframes g1 { 0%, 15% { fill: #1C1F27; stroke: #2E323D; } 18%, 100% { fill: #1D2A22; stroke: #7CC38C; } }
+  .g2 { animation-name: g2; } @keyframes g2 { 0%, 20% { fill: #1C1F27; stroke: #2E323D; } 23%, 100% { fill: #1D2A22; stroke: #7CC38C; } }
+  .g3 { animation-name: g3; } @keyframes g3 { 0%, 25% { fill: #1C1F27; stroke: #2E323D; } 28%, 100% { fill: #1D2A22; stroke: #7CC38C; } }
+  .g4 { animation-name: g4; } @keyframes g4 { 0%, 30% { fill: #1C1F27; stroke: #2E323D; } 33%, 100% { fill: #1D2A22; stroke: #7CC38C; } }
+  .g5 { animation-name: g5; } @keyframes g5 { 0%, 35% { fill: #1C1F27; stroke: #2E323D; } 38%, 62% { fill: #2C1C1E; stroke: #E5484D; } 66%, 100% { fill: #1D2A22; stroke: #7CC38C; } }
+  .g6 { animation-name: g6; } @keyframes g6 { 0%, 68% { fill: #1C1F27; stroke: #2E323D; } 71%, 100% { fill: #1D2A22; stroke: #7CC38C; } }
+  .why { opacity: 0; animation-name: why; } @keyframes why { 0%, 38% { opacity: 0; } 41%, 60% { opacity: 1; } 63%, 100% { opacity: 0; } }
+  .back { opacity: 0; animation-name: back; } @keyframes back { 0%, 42% { opacity: 0; } 45%, 58% { opacity: 1; } 61%, 100% { opacity: 0; } }
+  .rw { animation-name: rw; } @keyframes rw { 0%, 46% { opacity: 1; } 49% { opacity: .15; } 55%, 100% { opacity: 1; } }
+  .stamp { animation-name: stamp; } @keyframes stamp { 0%, 74% { opacity: 0; transform: scale(1.4); } 78%, 100% { opacity: 1; transform: scale(1); } }
+</style>
+<rect width="1000" height="340" rx="18" fill="#14161C"/>
+<text x="40" y="44" class="mono dim" font-size="11" letter-spacing="1">ARTIFACT QUALITY · THE MAKER NEVER APPROVES ITS OWN WORK</text>
+
+<g class="a scene">
+  <!-- maker and file -->
+  <rect x="40" y="80" width="180" height="170" rx="10" class="card"/>
+  <text x="58" y="106" class="sans ink" font-size="14" font-weight="600">Maker agent</text>
+  <text x="58" y="124" class="sans dim" font-size="11">writes from the world graph</text>
+  <g class="a rw">
+    <rect x="58" y="140" width="144" height="92" rx="4" fill="#ECE8E1" fill-opacity=".06" stroke="#8F96A3" stroke-opacity=".4"/>
+    <rect class="a w1" x="70" y="154" width="110" height="5" rx="2" fill="#8F96A3"/>
+    <rect class="a w2" x="70" y="168" width="84" height="5" rx="2" fill="#8F96A3"/>
+    <rect class="a w3" x="70" y="182" width="100" height="5" rx="2" fill="#8F96A3"/>
+    <rect class="a w3" x="70" y="196" width="66" height="5" rx="2" fill="#8F96A3"/>
+  </g>
+  <path d="M220 165 L 262 165" stroke="#D08C4A" stroke-width="1.6"/>
+  <path d="M256 160 L 264 165 L 256 170" fill="none" stroke="#D08C4A" stroke-width="1.6"/>
+
+  <!-- checks -->
+  <text x="270" y="106" class="sans ink" font-size="14" font-weight="600">Checks, by code and an independent model</text>
+  <g class="sans ink" font-size="13" stroke-width="1.6">
+    <rect class="a g1" x="270" y="140" width="112" height="50" rx="10" fill="#1D2A22" stroke="#7CC38C"/><text x="326" y="170" text-anchor="middle" stroke="none">Valid</text>
+    <rect class="a g2" x="392" y="140" width="112" height="50" rx="10" fill="#1D2A22" stroke="#7CC38C"/><text x="448" y="170" text-anchor="middle" stroke="none">Faithful</text>
+    <rect class="a g3" x="514" y="140" width="112" height="50" rx="10" fill="#1D2A22" stroke="#7CC38C"/><text x="570" y="170" text-anchor="middle" stroke="none">Continuous</text>
+    <rect class="a g4" x="636" y="140" width="112" height="50" rx="10" fill="#1D2A22" stroke="#7CC38C"/><text x="692" y="170" text-anchor="middle" stroke="none">In voice</text>
+    <rect class="a g5" x="758" y="140" width="112" height="50" rx="10" fill="#1D2A22" stroke="#7CC38C"/><text x="814" y="170" text-anchor="middle" stroke="none">Realistic</text>
+    <rect class="a g6" x="880" y="140" width="80" height="50" rx="10" fill="#1D2A22" stroke="#7CC38C"/><text x="920" y="170" text-anchor="middle" stroke="none">Novel</text>
+  </g>
+  <g class="sans dim" font-size="11" text-anchor="middle">
+    <text x="326" y="208">opens, parses</text><text x="448" y="208">every fact traces</text><text x="570" y="208">agrees across apps</text><text x="692" y="208">sounds like its author</text><text x="814" y="208">passes as real</text><text x="920" y="208">not a copy</text>
+  </g>
+
+  <!-- failure and targeted repair -->
+  <text class="a why red sans" x="814" y="232" text-anchor="middle" font-size="12">reads like a template</text>
+  <g class="a back">
+    <path d="M814 244 C 814 290, 140 290, 130 256" fill="none" stroke="#E5484D" stroke-width="1.6" stroke-dasharray="6 5"/>
+    <text x="470" y="302" text-anchor="middle" class="sans red" font-size="12">repair only the check that failed</text>
+  </g>
+
+  <!-- accepted -->
+  <g class="a stamp" style="transform-box: fill-box; transform-origin: center">
+    <rect x="640" y="262" width="320" height="46" rx="23" fill="#1D2A22" stroke="#7CC38C" stroke-width="1.6"/>
+    <text x="800" y="290" text-anchor="middle" class="sans green" font-size="14" font-weight="600">Accepted · receipt of every check</text>
+  </g>
+</g>
+</svg>

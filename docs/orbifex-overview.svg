@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 440" width="1000" height="440" role="img" aria-label="How Orbifex works. Three ways in: a description, an input seed, or open-source artifacts. They become one world graph of people, events, and time. The world is rendered into artifacts across apps: Slack, Notion, Email, Drive, CRM, and Tickets. A continuity check runs across every app. Three outputs come out: a dataset, an environment, and a benchmark.">
+<style>
+  .a { animation-duration: 14s; animation-iteration-count: infinite; animation-timing-function: ease-in-out; }
+  .sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .mono { font-family: SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+  .ink { fill: #ECE8E1; } .dim { fill: #8F96A3; } .bronze { fill: #D08C4A; } .green { fill: #7CC38C; }
+  .card { fill: #1C1F27; stroke: #2E323D; stroke-width: 1.5; }
+  .scene { animation-name: scene; } @keyframes scene { 0%, 94% { opacity: 1; } 98.5%, 100% { opacity: 0; } }
+  .in1 { animation-name: in1; } @keyframes in1 { 0% { opacity: 0; } 4%, 100% { opacity: 1; } }
+  .in2 { animation-name: in2; } @keyframes in2 { 0%, 3% { opacity: 0; } 7%, 100% { opacity: 1; } }
+  .in3 { animation-name: in3; } @keyframes in3 { 0%, 6% { opacity: 0; } 10%, 100% { opacity: 1; } }
+  .feed { animation-name: feed; } @keyframes feed { 0%, 10% { opacity: 0; } 15%, 100% { opacity: 1; } }
+  .orb { animation-name: orb; } @keyframes orb { 0%, 14% { opacity: .25; } 20%, 100% { opacity: 1; } }
+  .n1 { animation-name: n1; } @keyframes n1 { 0%, 16% { opacity: 0; } 19%, 100% { opacity: 1; } }
+  .n2 { animation-name: n2; } @keyframes n2 { 0%, 19% { opacity: 0; } 22%, 100% { opacity: 1; } }
+  .n3 { animation-name: n3; } @keyframes n3 { 0%, 22% { opacity: 0; } 25%, 100% { opacity: 1; } }
+  .n4 { animation-name: n4; } @keyframes n4 { 0%, 25% { opacity: 0; } 28%, 100% { opacity: 1; } }
+  .ray { animation-name: ray; } @keyframes ray { 0%, 30% { opacity: 0; } 35%, 100% { opacity: 1; } }
+  .t1 { animation-name: t1; } @keyframes t1 { 0%, 33% { opacity: .2; } 37%, 100% { opacity: 1; } }
+  .t2 { animation-name: t2; } @keyframes t2 { 0%, 36% { opacity: .2; } 40%, 100% { opacity: 1; } }
+  .t3 { animation-name: t3; } @keyframes t3 { 0%, 39% { opacity: .2; } 43%, 100% { opacity: 1; } }
+  .t4 { animation-name: t4; } @keyframes t4 { 0%, 42% { opacity: .2; } 46%, 100% { opacity: 1; } }
+  .t5 { animation-name: t5; } @keyframes t5 { 0%, 45% { opacity: .2; } 49%, 100% { opacity: 1; } }
+  .t6 { animation-name: t6; } @keyframes t6 { 0%, 48% { opacity: .2; } 52%, 100% { opacity: 1; } }
+  .scan { animation-name: scan; transform: translateX(0px); opacity: 0; }
+  @keyframes scan { 0%, 54% { transform: translateX(0px); opacity: 0; } 56% { opacity: .9; } 70% { transform: translateX(300px); opacity: .9; } 72%, 100% { transform: translateX(300px); opacity: 0; } }
+  .c1 { animation-name: c1; } @keyframes c1 { 0%, 58% { opacity: 0; } 60%, 100% { opacity: 1; } }
+  .c2 { animation-name: c2; } @keyframes c2 { 0%, 62% { opacity: 0; } 64%, 100% { opacity: 1; } }
+  .c3 { animation-name: c3; } @keyframes c3 { 0%, 66% { opacity: 0; } 68%, 100% { opacity: 1; } }
+  .ctext { animation-name: ctext; } @keyframes ctext { 0%, 69% { opacity: 0; } 72%, 100% { opacity: 1; } }
+  .o1 { animation-name: o1; } @keyframes o1 { 0%, 74% { opacity: .2; } 78%, 100% { opacity: 1; } }
+  .o2 { animation-name: o2; } @keyframes o2 { 0%, 77% { opacity: .2; } 81%, 100% { opacity: 1; } }
+  .o3 { animation-name: o3; } @keyframes o3 { 0%, 80% { opacity: .2; } 84%, 100% { opacity: 1; } }
+</style>
+<rect width="1000" height="440" rx="18" fill="#14161C"/>
+<text x="40" y="52" class="sans ink" font-size="22" font-weight="700" letter-spacing="6">ORBIFEX</text>
+<text x="40" y="76" class="sans dim" font-size="13">the world-maker for agent evals</text>
+
+<g class="a scene">
+  <!-- three ways in -->
+  <text x="40" y="128" class="mono dim" font-size="11" letter-spacing="1">THREE WAYS IN</text>
+  <g class="a in1"><rect x="40" y="140" width="190" height="40" rx="8" class="card"/><text x="58" y="165" class="sans ink" font-size="14">Description</text></g>
+  <g class="a in2"><rect x="40" y="192" width="190" height="40" rx="8" class="card"/><text x="58" y="217" class="sans ink" font-size="14">Input seed</text></g>
+  <g class="a in3"><rect x="40" y="244" width="190" height="40" rx="8" class="card"/><text x="58" y="269" class="sans ink" font-size="14">Open-source artifacts</text></g>
+  <g class="a feed" stroke="#D08C4A" stroke-width="1.6" fill="none" opacity="1">
+    <path d="M230 160 C 270 160, 280 212, 318 212"/><path d="M230 212 L 318 212"/><path d="M230 264 C 270 264, 280 212, 318 212"/>
+  </g>
+
+  <!-- the world -->
+  <g class="a orb">
+    <circle cx="398" cy="212" r="80" fill="#1C1F27" stroke="#D08C4A" stroke-width="2"/>
+    <ellipse cx="398" cy="212" rx="80" ry="28" fill="none" stroke="#D08C4A" stroke-opacity=".35"/>
+    <ellipse cx="398" cy="212" rx="28" ry="80" fill="none" stroke="#D08C4A" stroke-opacity=".35"/>
+  </g>
+  <g stroke="#8F96A3" stroke-width="1.2">
+    <g class="a n2"><line x1="370" y1="185" x2="420" y2="178"/><line x1="370" y1="185" x2="380" y2="240"/></g>
+    <g class="a n3"><line x1="420" y1="178" x2="428" y2="236"/><line x1="380" y1="240" x2="428" y2="236"/></g>
+    <g class="a n4"><line x1="428" y1="236" x2="455" y2="205"/><line x1="420" y1="178" x2="455" y2="205"/></g>
+  </g>
+  <g class="bronze">
+    <circle class="a n1" cx="370" cy="185" r="6"/>
+    <circle class="a n2" cx="420" cy="178" r="6"/>
+    <circle class="a n2" cx="380" cy="240" r="6"/>
+    <circle class="a n3" cx="428" cy="236" r="6"/>
+    <circle class="a n4" cx="455" cy="205" r="5"/>
+  </g>
+  <text x="398" y="318" text-anchor="middle" class="sans ink" font-size="14" font-weight="600">One world graph</text>
+  <text x="398" y="336" text-anchor="middle" class="sans dim" font-size="12">people, events, time</text>
+
+  <!-- rays to apps -->
+  <g class="a ray" stroke="#D08C4A" stroke-width="1.4" stroke-opacity=".7" fill="none">
+    <path d="M478 205 L 560 130"/><path d="M478 212 L 560 190"/><path d="M478 220 L 560 250"/>
+  </g>
+
+  <!-- apps -->
+  <g class="sans ink" font-size="14">
+    <g class="a t1"><rect x="560" y="108" width="130" height="44" rx="8" class="card"/><text x="578" y="135">Slack</text></g>
+    <g class="a t2"><rect x="710" y="108" width="130" height="44" rx="8" class="card"/><text x="728" y="135">Notion</text></g>
+    <g class="a t3"><rect x="560" y="168" width="130" height="44" rx="8" class="card"/><text x="578" y="195">Email</text></g>
+    <g class="a t4"><rect x="710" y="168" width="130" height="44" rx="8" class="card"/><text x="728" y="195">Drive</text></g>
+    <g class="a t5"><rect x="560" y="228" width="130" height="44" rx="8" class="card"/><text x="578" y="255">CRM</text></g>
+    <g class="a t6"><rect x="710" y="228" width="130" height="44" rx="8" class="card"/><text x="728" y="255">Tickets</text></g>
+  </g>
+  <rect class="a scan" x="552" y="100" width="6" height="180" rx="3" fill="#7CC38C"/>
+  <g class="green sans" font-size="16" font-weight="700">
+    <g class="a c1"><text x="668" y="136">✓</text><text x="818" y="136">✓</text></g>
+    <g class="a c2"><text x="668" y="196">✓</text><text x="818" y="196">✓</text></g>
+    <g class="a c3"><text x="668" y="256">✓</text><text x="818" y="256">✓</text></g>
+  </g>
+  <text class="a ctext green sans" x="700" y="300" text-anchor="middle" font-size="13" font-weight="600">continuity checked across every app</text>
+
+  <!-- outputs -->
+  <text x="560" y="344" class="mono dim" font-size="11" letter-spacing="1">WHAT COMES OUT</text>
+  <g class="sans ink" font-size="14" font-weight="600">
+    <g class="a o1"><rect x="560" y="356" width="120" height="40" rx="20" fill="#2A2118" stroke="#D08C4A"/><text x="620" y="381" text-anchor="middle">Dataset</text></g>
+    <g class="a o2"><rect x="692" y="356" width="130" height="40" rx="20" fill="#2A2118" stroke="#D08C4A"/><text x="757" y="381" text-anchor="middle">Environment</text></g>
+    <g class="a o3"><rect x="834" y="356" width="126" height="40" rx="20" fill="#2A2118" stroke="#D08C4A"/><text x="897" y="381" text-anchor="middle">Benchmark</text></g>
+  </g>
+</g>
+</svg>

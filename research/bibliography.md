@@ -1,6 +1,6 @@
 # Bibliography
 
-Every arXiv paper cited in this repo, with titles pulled from the arXiv API. Non-arXiv sources (blogs, leaderboards, essays) are linked inline in the notes.
+Every arXiv paper cited in this repo, with titles pulled from the arXiv API. Non-arXiv sources (blogs, leaderboards, essays, repositories) are linked inline in the notes.
 
 - Zellers et al. (2018). *SWAG: A Large-Scale Adversarial Dataset for Grounded Commonsense Inference*. [arXiv:1808.05326](https://arxiv.org/abs/1808.05326)
 - Zellers et al. (2019). *HellaSwag: Can a Machine Really Finish Your Sentence?*. [arXiv:1905.07830](https://arxiv.org/abs/1905.07830)
@@ -12,6 +12,7 @@ Every arXiv paper cited in this repo, with titles pulled from the arXiv API. Non
 - Wang et al. (2022). *Self-Instruct: Aligning Language Models with Self-Generated Instructions*. [arXiv:2212.10560](https://arxiv.org/abs/2212.10560)
 - Honovich et al. (2022). *Unnatural Instructions: Tuning Language Models with (Almost) No Human Labor*. [arXiv:2212.09689](https://arxiv.org/abs/2212.09689)
 - Saad-Falcon et al. (2023). *ARES: An Automated Evaluation Framework for Retrieval-Augmented Generation Systems*. [arXiv:2311.09476](https://arxiv.org/abs/2311.09476)
+- Min et al. (2023). *FActScore: Fine-grained Atomic Evaluation of Factual Precision in Long Form Text Generation*. [arXiv:2305.14251](https://arxiv.org/abs/2305.14251)
 - Liu et al. (2023). *G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment*. [arXiv:2303.16634](https://arxiv.org/abs/2303.16634)
 - Rein et al. (2023). *GPQA: A Graduate-Level Google-Proof Q&A Benchmark*. [arXiv:2311.12022](https://arxiv.org/abs/2311.12022)
 - Hosking et al. (2023). *Human Feedback is not Gold Standard*. [arXiv:2309.16349](https://arxiv.org/abs/2309.16349)
@@ -59,6 +60,7 @@ Every arXiv paper cited in this repo, with titles pulled from the arXiv API. Non
 - White et al. (2024). *LiveBench: A Challenging, Contamination-Limited LLM Benchmark*. [arXiv:2406.19314](https://arxiv.org/abs/2406.19314)
 - Panickssery et al. (2024). *LLM Evaluators Recognize and Favor Their Own Generations*. [arXiv:2404.13076](https://arxiv.org/abs/2404.13076)
 - Bavaresco et al. (2024). *LLMs instead of Human Judges? A Large Scale Empirical Study across 20 NLP Evaluation Tasks*. [arXiv:2406.18403](https://arxiv.org/abs/2406.18403)
+- Wei et al. (2024). *Long-form factuality in large language models*. [arXiv:2403.18802](https://arxiv.org/abs/2403.18802)
 - Xu et al. (2024). *Magpie: Alignment Data Synthesis from Scratch by Prompting Aligned LLMs with Nothing*. [arXiv:2406.08464](https://arxiv.org/abs/2406.08464)
 - Wei et al. (2024). *Measuring short-form factuality in large language models*. [arXiv:2411.04368](https://arxiv.org/abs/2411.04368)
 - Kipnis et al. (2024). *metabench -- A Sparse Benchmark of Reasoning and Knowledge in Large Language Models*. [arXiv:2407.12844](https://arxiv.org/abs/2407.12844)

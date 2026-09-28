@@ -12,6 +12,7 @@ Findings that hold whichever design we choose. Each note synthesizes a body of w
 | [06 · The practitioner canon](06-practitioner-canon.md) | What practitioners actually cite, consensus lessons, live disagreements |
 | [07 · Real-world messiness](07-messiness.md) | The failure modes real company data produces, and how to measure and reproduce them |
 | [08 · Assets we already have](08-own-assets.md) | Existing code and designs that a build can start from |
+| [09 · Adjacent tools](09-adjacent-tools.md) | Open-source tools close to each component (Kiln, Backlot, Inspect, Harbor, and others) |
 | [Bibliography](bibliography.md) | Every source, with links |
 
 **Reading conventions.** arXiv IDs were checked against the arXiv API. Numbers marked † are recalled from the paper's abstract and not re-checked; items marked *unverified* could not be confirmed.
