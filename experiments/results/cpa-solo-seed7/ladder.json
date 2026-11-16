@@ -1,0 +1,52 @@
+{
+ "answers_preserved": {
+  "passed": true,
+  "failures": []
+ },
+ "monotone_approx_tokens": {
+  "passed": true,
+  "values": [
+   11275,
+   65985,
+   385274,
+   1699310
+  ]
+ },
+ "monotone_units": {
+  "passed": true,
+  "values": [
+   79,
+   319,
+   1531,
+   5081
+  ]
+ },
+ "monotone_mean_stale_mentions": {
+  "passed": true,
+  "values": [
+   0.0,
+   0.0,
+   3.68,
+   12.83
+  ]
+ },
+ "monotone_probe_first_hit": {
+  "passed": true,
+  "values": [
+   1.0,
+   1.0,
+   0.659,
+   0.439
+  ]
+ },
+ "monotone_probe_latest_wins": {
+  "passed": true,
+  "values": [
+   1.0,
+   1.0,
+   0.561,
+   0.537
+  ]
+ },
+ "passed": true
+}

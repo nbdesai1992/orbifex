@@ -37,6 +37,17 @@ What the slice does:
 
 What it does not do yet: prose is rendered from templates (the artifact forge and its realism checks in section 4 are not built), tasks are read-only, and there is one engagement-cycle engine. `experiments/claude_pilot.py` runs a headless agent over the tiers to measure difficulty.
 
+First pilot (seed 7, `cpa-solo`, Claude Haiku 5.5 with Read, Grep, Glob and Write only), raw runs in [`experiments/results/cpa-solo-seed7/`](experiments/results/cpa-solo-seed7/):
+
+| | Tier 1 | Tier 2 | Tier 3 | Tier 4 |
+|---|---|---|---|---|
+| Needle tasks, 35 runs per tier | 35 | 35 | 35 | 35 |
+| Sweep tasks, 18 runs per tier | 18 | 18 | 17 | 17 |
+| First-hit reading policy, needle tasks | 100% | 100% | 69% | 49% |
+| Latest-wins reading policy, needle tasks | 100% | 100% | 66% | 63% |
+
+Both misses are `sweep-late-2026-04`, and each equals the planted wrong answer computed from the original due dates, with the due-date extensions ignored. The tiers raised cost (sweep tasks went from 1.1 to 6.8 cents per run) far more than they raised error, so the next step is to calibrate tiers against a solver's pass rate and to add updates that are implied instead of stated.
+
 ---
 
 ## Contents
