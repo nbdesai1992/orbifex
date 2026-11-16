@@ -4,3 +4,6 @@ build/
 datasets/
 *.egg-info/
 .venv/
+paper/*.log
+paper/*.aux
+paper/*.out

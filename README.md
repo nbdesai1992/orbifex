@@ -16,6 +16,8 @@ Think of it as a flight simulator for AI agents doing office work: a believable 
 
 ## Engine v0: persona to Harbor tasks
 
+**Paper:** [`paper/orbifex.pdf`](paper/orbifex.pdf), a NeurIPS-style preprint of the method, the pilot and the build-context fault. An illustrated summary is at <https://nealdes.ai/articles/persona-to-environment>, and the 164 exported tasks are at <https://nealdes.ai/assets/orbifex/cpa-solo-harbor.tar.gz>.
+
 ```bash
 # Python 3.11+, standard library only
 PYTHONPATH=src python -m orbifex.cli ladder personas/cpa-solo.toml --seed 7 \
@@ -33,7 +35,7 @@ What the slice does:
 - **Sources** (`render.py`): `.eml` mail, an `.ics` calendar, a drive of files and a chat export. Every rendered unit records the facts it states and whether each is current.
 - **Tasks** (`tasks.py`): eight families whose answers are identical at every tier, and three sweep families whose scope grows with the tier.
 - **Checks** (`checks.py`): a second solver (`oracle.py`) must derive every answer from the rendered files, the verifier must reject known wrong answers, nothing may leak, and difficulty measures must not fall as the tier rises.
-- **Harbor export** (`harbor.py`): one self-contained task directory per task, separate verifier, pinned images, non-root agent.
+- **Harbor export** (`harbor.py`): one self-contained task directory per task, separate verifier, pinned images, non-root agent. Files that differ between tasks and sit in a Docker build context carry a content hash in their names, because Docker reuses a same-named file across build contexts when size and timestamp match.
 
 What it does not do yet: prose is rendered from templates (the artifact forge and its realism checks in section 4 are not built), tasks are read-only, and there is one engagement-cycle engine. `experiments/claude_pilot.py` runs a headless agent over the tiers to measure difficulty.
 
