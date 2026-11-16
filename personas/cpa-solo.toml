@@ -1,0 +1,312 @@
+# Persona pack: a solo CPA whose working life is a monthly close for each client.
+# The engine supplies the fact sentences (times, totals, due dates). This file
+# supplies who exists, what the work is called, and how people write.
+
+id = "cpa-solo"
+today = "2026-07-27"          # the environment's present; nothing is dated after it
+core_months = ["2026-04", "2026-05"]
+
+[persona]
+name = "Dana Whitfield"
+first = "Dana"
+email = "dana@whitfieldcpa.example"
+org = "Whitfield Accounting"
+role = "Solo CPA"
+city = "Columbus, OH"
+timezone = "America/New_York"
+greeting = "Hi {first},"
+signoff = "Thanks,\nDana"
+
+[assistant]
+name = "Marco Ilves"
+first = "Marco"
+handle = "marco"
+email = "marco@whitfieldcpa.example"
+role = "Part-time bookkeeper"
+
+[bank]
+name = "Lakeshore Community Bank"
+email = "alerts@lakeshorecb.example"
+
+# How the engagement cycle is worded for this persona.
+[vocab]
+counterparty = "client"
+cycle = "close"
+materials = "documents"
+service = "monthly bookkeeping and close services"
+row_labels = ["POS DEPOSIT", "ACH PAYROLL", "CARD SETTLEMENT", "UTILITY AUTOPAY", "SUPPLY ORDER", "INSURANCE PREMIUM",
+  "RENT", "MERCHANT FEE", "CHECK", "REFUND", "SOFTWARE SUBSCRIPTION", "FUEL", "STATE TAX PAYMENT",
+  "TRANSFER FROM SAVINGS", "EQUIPMENT LEASE"]
+request_subject = "{month} documents for {org}"
+request_ask = "Could you send over the {month} {deliverables} when you get a chance? I'd like to have everything by {ask_by}."
+deliverables = ["bank statements", "credit card statements", "payroll summary", "sales tax report", "merchant deposits report"]
+delivery_line = "Attached are the {month} {deliverables}."
+meeting_title = "{month} close review - {org}"
+meeting_noun = "close review"
+invoice_subject = "Invoice {invoice_no} - {month} close"
+invoice_item = "Monthly bookkeeping and close, {month}"
+unit = "hours"
+rate_choices = [145, 150, 160, 165, 175, 185]
+qty_min = 4.0
+qty_max = 13.5
+invoice_direction = "outgoing"   # the persona bills the counterparty
+payment_line = "Incoming ACH payment of {amount} from {payer} was posted on {date}. Memo: {invoice_no}"
+modes = ["Zoom", "Phone", "Office"]
+
+[voice]
+openers = [
+  "Hope the week is going well.",
+  "Quick one from me.",
+  "Following up on the monthly cycle.",
+  "",
+  "Thanks for the quick turnaround last month.",
+]
+contact_openers = [
+  "Sorry for the delay on this.",
+  "Here you go.",
+  "Sending these before I forget.",
+  "",
+  "Let me know if anything is missing.",
+]
+closers = [
+  "Let me know if anything looks off.",
+  "Shout if you have questions.",
+  "",
+  "Talk soon.",
+]
+reschedule_reasons = [
+  "a supplier visit landed on that morning",
+  "I have a dentist appointment I can't move",
+  "our office is closed for an inspection that day",
+  "I'm traveling and will be on a plane",
+  "payroll deadline moved up and I'll be buried",
+]
+correction_reasons = [
+  "I logged the payroll reconciliation twice",
+  "I missed the time spent on the sales tax amendment",
+  "the hours from the second review call were left off",
+  "I applied last year's rate by mistake",
+]
+note_lines = [
+  "Walked through the {month} bank reconciliation; {n} items still open.",
+  "Reviewed the {month} payroll entries; {n} need a second look.",
+  "Went over the {month} sales tax workpaper; {n} adjustments noted.",
+]
+follow_ups = ["missing receipts", "the loan statement", "the updated payroll register", "vendor W-9s"]
+personal_events = ["Dentist", "School pickup", "Gym", "Dinner with Ruth", "Car service", "Parent-teacher conference",
+  "CPE webinar", "Haircut", "Farmers market", "Book club"]
+chatter = ["Printer is out of toner again.", "Dropped the mail at the box.", "Can you check the payroll login?",
+  "Back at 2.", "Coffee order?", "The scanner ate another receipt.", "Renewed the software licence.",
+  "Stepping out for the bank run.", "Left the signed forms on your desk."]
+extension_reasons = [
+  "our card processor is holding deposits this week",
+  "we're waiting on an insurance reimbursement",
+  "the owner is out until the end of the month and signs the checks",
+]
+
+# Three core clients. Every task is asked about these, at every tier.
+[[orgs]]
+key = "harlow-dental"
+name = "Harlow Dental"
+payer = "HARLOW DENTAL PLLC"
+domain = "harlowdental.example"
+contact = "Priya Raman"
+core = true
+
+[[orgs]]
+key = "kessler-landscaping"
+name = "Kessler Landscaping"
+payer = "KESSLER LANDSCAPING LLC"
+domain = "kesslerlandscaping.example"
+contact = "Tom Kessler"
+core = true
+
+[[orgs]]
+key = "brightwater-yoga"
+name = "Brightwater Yoga"
+payer = "BRIGHTWATER YOGA INC"
+domain = "brightwateryoga.example"
+contact = "Elena Marsh"
+core = true
+
+# Look-alikes. They enter at tier 3 and share a name token and a contact first
+# name with a core client.
+[[orgs]]
+key = "harlow-design"
+name = "Harlow Design Studio"
+payer = "HARLOW DESIGN STUDIO LLC"
+domain = "harlowdesign.example"
+contact = "Priya Nair"
+collides = "harlow-dental"
+
+[[orgs]]
+key = "kessler-plumbing"
+name = "Kessler & Sons Plumbing"
+payer = "KESSLER AND SONS PLUMBING"
+domain = "kesslerplumbing.example"
+contact = "Tom Brandt"
+collides = "kessler-landscaping"
+
+[[orgs]]
+key = "brightwater-marine"
+name = "Brightwater Marine Supply"
+payer = "BRIGHTWATER MARINE SUPPLY CO"
+domain = "brightwatermarine.example"
+contact = "Elena Voss"
+collides = "brightwater-yoga"
+
+# Ordinary extra clients, added in this order as the tier rises.
+[[orgs]]
+key = "oakline-bakery"
+name = "Oakline Bakery"
+payer = "OAKLINE BAKERY LLC"
+domain = "oaklinebakery.example"
+contact = "Renee Dalton"
+
+[[orgs]]
+key = "fenwick-auto"
+name = "Fenwick Auto Repair"
+payer = "FENWICK AUTO REPAIR INC"
+domain = "fenwickauto.example"
+contact = "Marcus Fenwick"
+
+[[orgs]]
+key = "juniper-pediatrics"
+name = "Juniper Pediatrics"
+payer = "JUNIPER PEDIATRICS PC"
+domain = "juniperpeds.example"
+contact = "Dr. Amira Suleiman"
+
+[[orgs]]
+key = "castellan-realty"
+name = "Castellan Realty"
+payer = "CASTELLAN REALTY GROUP"
+domain = "castellanrealty.example"
+contact = "Victor Castellan"
+
+[[orgs]]
+key = "mossgrove-nursery"
+name = "Mossgrove Nursery"
+payer = "MOSSGROVE NURSERY LLC"
+domain = "mossgrove.example"
+contact = "Hannah Lindqvist"
+
+[[orgs]]
+key = "tidewell-coffee"
+name = "Tidewell Coffee Roasters"
+payer = "TIDEWELL COFFEE ROASTERS"
+domain = "tidewellcoffee.example"
+contact = "Sam Okafor"
+
+[[orgs]]
+key = "arden-law"
+name = "Arden Family Law"
+payer = "ARDEN FAMILY LAW LLP"
+domain = "ardenlaw.example"
+contact = "Julia Arden"
+
+[[orgs]]
+key = "pinecrest-vet"
+name = "Pinecrest Veterinary"
+payer = "PINECREST VETERINARY CLINIC"
+domain = "pinecrestvet.example"
+contact = "Dr. Owen Tran"
+
+[[orgs]]
+key = "lumen-print"
+name = "Lumen Print Shop"
+payer = "LUMEN PRINT SHOP"
+domain = "lumenprint.example"
+contact = "Carla Mendes"
+
+[[orgs]]
+key = "sable-fitness"
+name = "Sable Street Fitness"
+payer = "SABLE STREET FITNESS LLC"
+domain = "sablefitness.example"
+contact = "Derek Holm"
+
+[[orgs]]
+key = "northgate-optometry"
+name = "Northgate Optometry"
+payer = "NORTHGATE OPTOMETRY PC"
+domain = "northgateoptometry.example"
+contact = "Dr. Mei Castillo"
+
+[[orgs]]
+key = "quill-books"
+name = "Quill & Co Books"
+payer = "QUILL AND CO BOOKS"
+domain = "quillbooks.example"
+contact = "Abigail Stern"
+
+[[orgs]]
+key = "redfern-catering"
+name = "Redfern Catering"
+payer = "REDFERN CATERING LLC"
+domain = "redferncatering.example"
+contact = "Luis Redfern"
+
+[[orgs]]
+key = "halcyon-pilates"
+name = "Halcyon Pilates"
+payer = "HALCYON PILATES STUDIO"
+domain = "halcyonpilates.example"
+contact = "Nora Whitlock"
+
+# Mail that has nothing to do with any client. Volume rises with the tier.
+[[noise]]
+sender = "Ohio Society of CPAs <news@ohiocpa.example>"
+subjects = ["This week: CPE deadlines and member news", "Tax practice update for {mon}", "Register now: ethics webinar"]
+bodies = [
+  "This month's update covers changes to estimated payment safe harbors, a reminder about CPE reporting, and a members-only webinar on Thursday at 2:00 PM. Early registration is $45.00 through {date}.",
+  "Members asked for a plain summary of the new information return thresholds. The short version is in the attached brief. Our fall conference is {date}; the member rate is $325.00.",
+]
+
+[[noise]]
+sender = "LedgerLoop <billing@ledgerloop.example>"
+subjects = ["Your LedgerLoop receipt", "Your plan renews soon", "New: bank feed rules"]
+bodies = [
+  "Thanks for your payment of $89.00 on {date}. Your next billing date is one month out. Invoice LL-{n4} is attached for your records.",
+  "Bank feed rules can now be shared across client files. The release goes out {date} at 9:00 AM Eastern.",
+]
+
+[[noise]]
+sender = "Columbus Parks & Rec <programs@columbusparks.example>"
+subjects = ["Summer swim lessons: registration open", "Field closure notice", "Your registration receipt"]
+bodies = [
+  "Registration for the next session opens {date} at 8:00 AM. Classes meet Tuesdays and Thursdays at 4:30 PM. The fee is $72.00 per child.",
+  "The north fields are closed for reseeding through {date}. Evening leagues move to the east complex.",
+]
+
+[[noise]]
+sender = "Ruth Whitfield <ruth.whitfield@mailhaven.example>"
+subjects = ["Sunday dinner?", "Photos from the lake", "Dad's birthday plan"]
+bodies = [
+  "Are you and the kids free Sunday around 5:30 PM? I'm making the lasagna. Bring nothing.",
+  "I finally sorted the lake photos. Your father wants prints, so I ordered a set for $31.50. Call me when you have a minute.",
+]
+
+[[noise]]
+sender = "Meridian Office Supply <orders@meridianoffice.example>"
+subjects = ["Order {n4} has shipped", "Your order confirmation", "Toner back in stock"]
+bodies = [
+  "Order {n4} shipped on {date}. Total charged: $146.20. Expected delivery in three business days.",
+  "The toner cartridge you asked about is back in stock at $64.99. Orders placed before 3:00 PM ship the same day.",
+]
+
+[[noise]]
+sender = "IRS e-Services <no-reply@irs-eservices.example>"
+subjects = ["Secure message available", "PTIN renewal reminder", "Transcript request completed"]
+bodies = [
+  "A new secure message is available in your e-Services mailbox. Messages are retained for 30 days.",
+  "Your transcript request submitted on {date} has completed. Retrieve it within 120 hours.",
+]
+
+[[noise]]
+sender = "Westbrook Elementary <office@westbrookelem.example>"
+subjects = ["Picture day is {date}", "Early dismissal Friday", "Field trip permission slip"]
+bodies = [
+  "Picture day is {date}. Orders can be placed online; the basic package is $24.00.",
+  "Friday is an early dismissal day. Pickup begins at 12:15 PM. Aftercare runs until 6:00 PM as usual.",
+]

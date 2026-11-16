@@ -1,0 +1,278 @@
+# Persona pack: an independent brand designer who works on monthly retainers.
+# Same engine as the CPA pack. Only the people, the wording and the noise differ.
+
+id = "studio-retainer"
+today = "2026-07-27"
+core_months = ["2026-04", "2026-05"]
+
+[persona]
+name = "Maya Okonkwo"
+first = "Maya"
+email = "maya@okonkwostudio.example"
+org = "Okonkwo Studio"
+role = "Independent brand designer"
+city = "Portland, OR"
+timezone = "America/Los_Angeles"
+greeting = "Hey {first},"
+signoff = "Cheers,\nMaya"
+
+[assistant]
+name = "Jules Tran"
+first = "Jules"
+handle = "jules"
+email = "jules@okonkwostudio.example"
+role = "Part-time studio manager"
+
+[bank]
+name = "Cascadia Credit Union"
+email = "notify@cascadiacu.example"
+
+[vocab]
+counterparty = "client"
+cycle = "retainer"
+materials = "inputs"
+service = "brand and campaign design on a monthly retainer"
+request_subject = "{month} inputs for {org}"
+request_ask = "Can you send the {month} {deliverables} when you have a moment? Ideally by {ask_by} so I can plan the next round."
+deliverables = ["analytics export", "campaign calendar", "asset request list", "sales summary", "feedback log"]
+row_labels = ["HOMEPAGE SESSIONS", "EMAIL CAMPAIGN", "PAID SOCIAL", "ORGANIC SOCIAL", "PRODUCT PAGE", "CHECKOUT",
+  "RETURNS", "NEW SUBSCRIBERS", "WHOLESALE ORDER", "POPUP EVENT", "REFERRAL", "GIFT CARDS"]
+meeting_title = "{month} retainer review - {org}"
+meeting_noun = "retainer review"
+invoice_subject = "Invoice {invoice_no} - {month} retainer"
+invoice_item = "Design retainer, {month}"
+unit = "hours"
+rate_choices = [95, 110, 120, 135, 150]
+qty_min = 6.0
+qty_max = 24.0
+invoice_direction = "outgoing"
+payment_line = "Incoming ACH payment of {amount} from {payer} was posted on {date}. Memo: {invoice_no}"
+modes = ["Zoom", "Phone", "Office"]
+
+[voice]
+openers = ["Hope the launch week treated you well.", "Quick monthly ask.", "", "Loved the new window display, by the way.", "Round two of the month coming up."]
+contact_openers = ["Here's everything.", "Sorry, this sat in my drafts.", "", "Pulled these this morning.", "Tell me if a file is missing."]
+closers = ["Holler with questions.", "", "More soon.", "Thanks for keeping this easy."]
+reschedule_reasons = [
+  "we have a photo shoot booked in the space that day",
+  "I'm at a trade show and the wifi is hopeless",
+  "our printer moved the proof review to that slot",
+  "I have a school thing I can't skip",
+  "the team offsite got moved onto that morning",
+]
+correction_reasons = [
+  "I counted the packaging revisions twice",
+  "the hours for the extra banner set were left off",
+  "I missed the time on the second logo round",
+  "I used the old hourly rate by mistake",
+]
+note_lines = [
+  "Reviewed the {month} campaign results; {n} assets flagged for a refresh.",
+  "Walked through the {month} asset requests; {n} still waiting on copy.",
+  "Looked at the {month} analytics together; {n} pages to rework.",
+]
+follow_ups = ["final copy for the mailer", "the updated product photos", "the wholesale price sheet", "brand guideline notes"]
+personal_events = ["Pottery class", "Vet appointment", "Climbing gym", "Dinner with Ade", "Bike tune-up", "School concert",
+  "Portfolio review night", "Haircut", "Saturday market", "Run club"]
+chatter = ["Plotter is jammed again.", "Samples arrived from the printer.", "Can you renew the font licence?",
+  "Back after lunch.", "Coffee run?", "The courier needs a signature.", "Backed up the shared drive.",
+  "Heading to the print shop.", "Left the swatch book on your desk."]
+extension_reasons = [
+  "our payment run only goes out twice a month",
+  "we're waiting on a wholesale deposit to clear",
+  "the owner is travelling and approves the transfers",
+]
+
+[[orgs]]
+key = "tallow-thread"
+name = "Tallow & Thread"
+payer = "TALLOW AND THREAD LLC"
+domain = "tallowandthread.example"
+contact = "Ines Calder"
+core = true
+
+[[orgs]]
+key = "northbound-coffee"
+name = "Northbound Coffee"
+payer = "NORTHBOUND COFFEE CO"
+domain = "northboundcoffee.example"
+contact = "Reggie Park"
+core = true
+
+[[orgs]]
+key = "fernhill-skincare"
+name = "Fernhill Skincare"
+payer = "FERNHILL SKINCARE INC"
+domain = "fernhillskincare.example"
+contact = "Sofia Lindgren"
+core = true
+
+[[orgs]]
+key = "tallow-lane"
+name = "Tallow Lane Candles"
+payer = "TALLOW LANE CANDLES"
+domain = "tallowlane.example"
+contact = "Ines Moreau"
+collides = "tallow-thread"
+
+[[orgs]]
+key = "northbound-cycles"
+name = "Northbound Cycles"
+payer = "NORTHBOUND CYCLES LLC"
+domain = "northboundcycles.example"
+contact = "Reggie Alvarez"
+collides = "northbound-coffee"
+
+[[orgs]]
+key = "fernhill-pottery"
+name = "Fernhill Pottery"
+payer = "FERNHILL POTTERY STUDIO"
+domain = "fernhillpottery.example"
+contact = "Sofia Bianchi"
+collides = "fernhill-skincare"
+
+[[orgs]]
+key = "marlow-tea"
+name = "Marlow Tea Co"
+payer = "MARLOW TEA COMPANY"
+domain = "marlowtea.example"
+contact = "Dev Anand"
+
+[[orgs]]
+key = "juniper-row"
+name = "Juniper Row Florist"
+payer = "JUNIPER ROW FLORIST"
+domain = "juniperrow.example"
+contact = "Kate Molloy"
+
+[[orgs]]
+key = "saltgrass-surf"
+name = "Saltgrass Surf Shop"
+payer = "SALTGRASS SURF SHOP LLC"
+domain = "saltgrasssurf.example"
+contact = "Bo Hendricks"
+
+[[orgs]]
+key = "paper-kite"
+name = "Paper Kite Books"
+payer = "PAPER KITE BOOKS"
+domain = "paperkitebooks.example"
+contact = "Lena Fischer"
+
+[[orgs]]
+key = "cinder-bakehouse"
+name = "Cinder Bakehouse"
+payer = "CINDER BAKEHOUSE LLC"
+domain = "cinderbakehouse.example"
+contact = "Omar Haddad"
+
+[[orgs]]
+key = "wildrye-outfitters"
+name = "Wildrye Outfitters"
+payer = "WILDRYE OUTFITTERS INC"
+domain = "wildrye.example"
+contact = "Tess Novak"
+
+[[orgs]]
+key = "bluebird-dental"
+name = "Bluebird Dental Studio"
+payer = "BLUEBIRD DENTAL STUDIO PC"
+domain = "bluebirddental.example"
+contact = "Dr. Ana Reyes"
+
+[[orgs]]
+key = "hollis-vane"
+name = "Hollis & Vane Jewelers"
+payer = "HOLLIS AND VANE JEWELERS"
+domain = "hollisvane.example"
+contact = "Peter Hollis"
+
+[[orgs]]
+key = "greenlake-yoga"
+name = "Greenlake Yoga"
+payer = "GREENLAKE YOGA LLC"
+domain = "greenlakeyoga.example"
+contact = "Mira Shah"
+
+[[orgs]]
+key = "copperline-brewing"
+name = "Copperline Brewing"
+payer = "COPPERLINE BREWING CO"
+domain = "copperlinebrewing.example"
+contact = "Jack Durant"
+
+[[orgs]]
+key = "thistle-home"
+name = "Thistle Home Goods"
+payer = "THISTLE HOME GOODS"
+domain = "thistlehome.example"
+contact = "Fiona Blake"
+
+[[orgs]]
+key = "lark-street-pets"
+name = "Lark Street Pets"
+payer = "LARK STREET PETS LLC"
+domain = "larkstreetpets.example"
+contact = "Gus Romero"
+
+[[orgs]]
+key = "sundial-optical"
+name = "Sundial Optical"
+payer = "SUNDIAL OPTICAL PC"
+domain = "sundialoptical.example"
+contact = "Dr. Leah Kim"
+
+[[orgs]]
+key = "harborview-bikes"
+name = "Harborview Bikes"
+payer = "HARBORVIEW BIKES"
+domain = "harborviewbikes.example"
+contact = "Noel Park"
+
+[[noise]]
+sender = "Typewell Fonts <receipts@typewell.example>"
+subjects = ["Your Typewell receipt", "Licence renewal notice", "New release: a warmer grotesque"]
+bodies = [
+  "Thanks for your order on {date}. Desktop licence, 3 seats: $129.00. Order TW-{n4}.",
+  "Your web licence renews on {date} at 9:00 AM Pacific. The annual fee is $240.00.",
+]
+
+[[noise]]
+sender = "Design Guild Portland <hello@designguildpdx.example>"
+subjects = ["This month: studio tours and a critique night", "Members' show call for entries", "Workshop: packaging on a budget"]
+bodies = [
+  "Critique night is Thursday at 6:30 PM. Bring one piece. Members free, guests $15.00.",
+  "The call for entries closes {date}. The entry fee is $35.00 for up to three pieces.",
+]
+
+[[noise]]
+sender = "Stockroom Photos <billing@stockroomphotos.example>"
+subjects = ["Your monthly statement", "Credits expiring soon", "Invoice SP-{n4}"]
+bodies = [
+  "Your plan renewed on {date}. Amount charged: $49.00. Invoice SP-{n4} is attached for your records.",
+  "You have 12 download credits expiring on {date}. Unused credits do not roll over.",
+]
+
+[[noise]]
+sender = "Ade Okonkwo <ade.okonkwo@mailhaven.example>"
+subjects = ["Mum's birthday", "Saturday?", "Found your old sketchbooks"]
+bodies = [
+  "Are you free Saturday around 4:00 PM? I booked the place on Alberta. My treat this time.",
+  "I split the gift three ways, it comes to $42.50 each. Send it whenever.",
+]
+
+[[noise]]
+sender = "Eastside Print Works <orders@eastsideprint.example>"
+subjects = ["Proof ready for approval", "Order {n4} is ready for pickup", "Paper stock update"]
+bodies = [
+  "Your proof is ready. Approve by {date} at 3:00 PM to hold the press slot. Estimated total: $386.40.",
+  "Order {n4} is ready for pickup. Balance due at pickup: $118.75.",
+]
+
+[[noise]]
+sender = "Hawthorne Elementary <office@hawthorneelem.example>"
+subjects = ["Spring concert is {date}", "Early release Friday", "Volunteer sign-up"]
+bodies = [
+  "The spring concert is {date} at 6:00 PM in the gym. Tickets are $5.00 at the door.",
+  "Friday is an early release day. Pickup begins at 12:30 PM.",
+]

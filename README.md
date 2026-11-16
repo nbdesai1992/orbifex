@@ -12,7 +12,30 @@ Think of it as a flight simulator for AI agents doing office work: a believable 
 
 *Orbis* is Latin for world, and *-fex* means maker, as in *artifex*. Orbifex is part of the [Consul](https://github.com/nbdesai1992/consul) family: Consul builds software; Orbifex builds the worlds agents are tested in.
 
-> **Status: design only.** This repo holds the design and the research behind it, so the design can change quickly. No engine code yet. The research in [`research/`](research/README.md) stands on its own.
+> **Status: design, plus a first engine slice.** The design below is unchanged. `src/orbifex/` now holds a working slice of it: a persona pack becomes a world, the world is rendered to mail, calendar, drive and chat at four complexity tiers, tasks are built from their answers, and everything is exported as [Harbor](https://github.com/harbor-framework/harbor) task directories. The research in [`research/`](research/README.md) stands on its own.
+
+## Engine v0: persona to Harbor tasks
+
+```bash
+# Python 3.11+, standard library only
+PYTHONPATH=src python -m orbifex.cli ladder personas/cpa-solo.toml --seed 7 \
+    --out build/cpa --workspace --harbor datasets
+harbor lint --extend-select ALL datasets/cpa-solo-t*/*/
+harbor run -p datasets/cpa-solo-t3 -a oracle     # every reward should be 1
+harbor run -p datasets/cpa-solo-t3 -a nop        # every reward should be 0
+python -m unittest discover -s tests
+```
+
+What the slice does:
+
+- **Persona pack** (`personas/*.toml`): who exists, what the work is called, how people write, and what the noise looks like. Two packs ship: a solo CPA and an independent designer on retainers.
+- **World** (`world.py`): final facts are drawn from a random stream keyed by seed, entity and month, never by tier. Tiers add superseded history, look-alike counterparties and volume around the same truth.
+- **Sources** (`render.py`): `.eml` mail, an `.ics` calendar, a drive of files and a chat export. Every rendered unit records the facts it states and whether each is current.
+- **Tasks** (`tasks.py`): eight families whose answers are identical at every tier, and three sweep families whose scope grows with the tier.
+- **Checks** (`checks.py`): a second solver (`oracle.py`) must derive every answer from the rendered files, the verifier must reject known wrong answers, nothing may leak, and difficulty measures must not fall as the tier rises.
+- **Harbor export** (`harbor.py`): one self-contained task directory per task, separate verifier, pinned images, non-root agent.
+
+What it does not do yet: prose is rendered from templates (the artifact forge and its realism checks in section 4 are not built), tasks are read-only, and there is one engagement-cycle engine. `experiments/claude_pilot.py` runs a headless agent over the tiers to measure difficulty.
 
 ---
 
