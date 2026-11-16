@@ -87,19 +87,53 @@ class ExportTests(unittest.TestCase):
             out = harbor.export(world, rendered, tasks, report["measure"], Path(tmp) / "ds")
             task = tasks[0]
             d = out / task.id
-            for rel in ("instruction.md", "task.toml", "environment/Dockerfile", "environment/world.tar.gz",
-                        "tests/Dockerfile", "tests/test.sh", "tests/verify.py", "tests/gold.json",
+            for rel in ("instruction.md", "task.toml", "environment/Dockerfile",
+                        "tests/Dockerfile", "tests/test.sh", "tests/verify.py",
                         "solution/solve.sh", "solution/oracle.py", "solution/spec.json"):
                 self.assertTrue((d / rel).is_file(), rel)
+            for pattern in ("environment/world.*.tar.gz", "tests/gold.*.json", "tests/negatives.*.json"):
+                self.assertEqual(len(list(d.glob(pattern))), 1, pattern)
             cfg = tomllib.loads((d / "task.toml").read_text())
             self.assertEqual(cfg["schema_version"], "1.4")
             self.assertEqual(cfg["verifier"]["environment_mode"], "separate")
             self.assertEqual(cfg["artifacts"], ["/workspace/answer.json"])
             self.assertEqual(cfg["metadata"]["tier"], 2)
-            names = tarfile.open(fileobj=io.BytesIO((d / "environment" / "world.tar.gz").read_bytes())).getnames()
+            names = tarfile.open(fileobj=io.BytesIO(next((d / "environment").glob("world.*.tar.gz")).read_bytes())).getnames()
             self.assertFalse([n for n in names if "gold" in n or "manifest" in n or "answer" in n])
             self.assertNotIn("gold", json.dumps(json.loads((d / "solution" / "spec.json").read_text())))
             self.assertEqual(sorted(p.name for p in out.iterdir()), sorted(t.id for t in tasks))
+
+class BuildContextTests(unittest.TestCase):
+    """Docker reuses a build-context file from another folder of the same name when path, size and
+    timestamp match. Files that sit in a build context must therefore never share a path across
+    tasks unless they also share their content."""
+
+    def test_same_path_in_a_build_context_means_same_content(self):
+        import hashlib
+        seen: dict[tuple[str, str], str] = {}
+        with tempfile.TemporaryDirectory() as tmp:
+            for tier in (2, 3):
+                world, rendered, tasks, report = build_tier(PACK, tier, 7)
+                out = harbor.export(world, rendered, tasks, report["measure"], Path(tmp) / f"t{tier}")
+                for context in out.glob("*/environment"), out.glob("*/tests"):
+                    for folder in context:
+                        for f in folder.iterdir():
+                            key = (folder.name, f.name)
+                            digest = hashlib.sha256(f.read_bytes()).hexdigest()
+                            self.assertEqual(seen.setdefault(key, digest), digest, f"{key} differs between tasks")
+
+    def test_verifier_refuses_a_key_that_is_not_its_own(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tests_dir, out = Path(tmp) / "tests", Path(tmp) / "logs"
+            tests_dir.mkdir()
+            (Path(tmp) / "answer.json").write_text('{"date": "2026-05-14"}')
+            (tests_dir / "gold.000000000000.json").write_text('{"date": "2026-05-14"}\n')   # name does not match content
+            with self.assertRaises(SystemExit):
+                verify.main(str(Path(tmp) / "answer.json"), str(tests_dir), str(out))
+            self.assertFalse((out / "reward.txt").exists())
+            (tests_dir / "gold.111111111111.json").write_text("{}")                          # two keys present
+            with self.assertRaises(SystemExit):
+                verify.main(str(Path(tmp) / "answer.json"), str(tests_dir), str(out))
 
 
 if __name__ == "__main__":

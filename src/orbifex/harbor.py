@@ -3,10 +3,19 @@
 One directory per task, each self-contained: the workspace travels as a
 tarball in environment/, the answer key lives only in tests/, and the
 reference solver in solution/ derives the answer from the workspace files.
+
+Every file that differs between tasks and sits in a Docker build context
+(environment/ or tests/) carries a hash of its content in its name. Docker's
+builder keeps one cached copy of a build context per folder name and treats a
+file as unchanged when its path, size and timestamp match, so a fixed name
+such as tests/gold.json can be served from another task's context once
+timestamps have been flattened to whole seconds by an archive. With hashed
+names a path match implies a content match.
 """
 from __future__ import annotations
 
 import gzip
+import hashlib
 import io
 import json
 import os
@@ -23,7 +32,7 @@ BASE_IMAGE = "python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a
 
 ENV_DOCKERFILE = f"""FROM {BASE_IMAGE}
 RUN useradd -m -u 1000 agent
-COPY world.tar.gz /tmp/world.tar.gz
+COPY world.*.tar.gz /tmp/world.tar.gz
 RUN mkdir -p /workspace \\
  && tar -xzf /tmp/world.tar.gz -C /workspace \\
  && rm /tmp/world.tar.gz \\
@@ -37,8 +46,8 @@ COPY . /tests/
 """
 
 TEST_SH = """#!/bin/bash
-# Compares /workspace/answer.json with the key and writes /logs/verifier/reward.txt.
-python3 /tests/verify.py /workspace/answer.json /tests/gold.json /logs/verifier
+# Compares /workspace/answer.json with the key in /tests and writes /logs/verifier/reward.txt.
+python3 /tests/verify.py /workspace/answer.json /tests /logs/verifier
 """
 
 SOLVE_SH = """#!/bin/bash
@@ -128,7 +137,7 @@ def export(world: World, rendered: Rendered, tasks: list[Task], measured: dict, 
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     tarball = world_tarball(world, rendered)
-    world_hash = __import__("hashlib").sha256(tarball).hexdigest()
+    world_hash = hashlib.sha256(tarball).hexdigest()
     shared = out / ".world.tar.gz"
     shared.write_bytes(tarball)
     oracle_src = Path(oracle_module.__file__).read_text()
@@ -140,9 +149,9 @@ def export(world: World, rendered: Rendered, tasks: list[Task], measured: dict, 
             (d / sub).mkdir(parents=True, exist_ok=True)
         (d / "instruction.md").write_text(note + instruction(world, t))
         (d / "task.toml").write_text(task_toml(world, t, measured["tasks"][t.id], world_hash))
-        target = d / "environment" / "world.tar.gz"
-        if target.exists():
-            target.unlink()
+        for stale in list((d / "environment").glob("world*.tar.gz")) + list((d / "tests").glob("*.json")):
+            stale.unlink()
+        target = d / "environment" / f"world.{world_hash[:12]}.tar.gz"
         try:
             os.link(shared, target)                 # one copy on disk for the whole tier
         except OSError:
@@ -151,8 +160,9 @@ def export(world: World, rendered: Rendered, tasks: list[Task], measured: dict, 
         (d / "tests" / "Dockerfile").write_text(TESTS_DOCKERFILE)
         (d / "tests" / "test.sh").write_text(TEST_SH)
         (d / "tests" / "verify.py").write_text(verify_src)
-        (d / "tests" / "gold.json").write_text(json.dumps(t.gold, indent=1) + "\n")
-        (d / "tests" / "negatives.json").write_text(json.dumps(t.negatives, indent=1) + "\n")
+        for stem, value in (("gold", t.gold), ("negatives", t.negatives)):
+            data = (json.dumps(value, indent=1) + "\n").encode()
+            (d / "tests" / f"{stem}.{hashlib.sha256(data).hexdigest()[:12]}.json").write_bytes(data)
         (d / "solution" / "solve.sh").write_text(SOLVE_SH)
         (d / "solution" / "oracle.py").write_text(oracle_src)
         (d / "solution" / "spec.json").write_text(json.dumps(t.spec, indent=1) + "\n")
