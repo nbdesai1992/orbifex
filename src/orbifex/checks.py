@@ -21,7 +21,7 @@ from .tasks import Task
 from .world import World
 
 FORBIDDEN_IN_WORKSPACE = ["orbifex", "declined_proposal", "late_forward", "cancelled_leftover", "stale_row",
-                          "misfiled", "canary", "gold.json", "manifest"]
+                          "misfiled", "canary", "gold.json", "manifest", "refund_estimate", "app_lag"]
 
 
 def write_workspace(rendered: Rendered, root: Path) -> None:
@@ -141,6 +141,8 @@ CLAIM_FORMATS = {
     "paid": lambda v: [] if v == "none" else [_day(v.split("|")[0]), v.split("|")[0]],
     "meeting": lambda v: [_day(v[:10]), v[:10]],
     "length": lambda v: [v.split("|")[1]],
+    "total": lambda v: [f"{float(v):,.2f}", f"{float(v):.2f}"],
+    "refund": lambda v: [f"{float(v):,.2f}", f"{float(v):.2f}"],
 }
 
 
@@ -195,9 +197,9 @@ def run_gates(world: World, rendered: Rendered, tasks: list[Task]) -> dict:
         for c in a.claims:
             attr = c.fact.rsplit("/", 1)[1]
             forms = CLAIM_FORMATS[attr](c.value)
-            if attr == "meeting" and a.source == "chat":
+            if attr == "meeting" and a.source == "slack":
                 forms = [_short_day(c.value[:10])]
-            if attr == "paid" and a.source == "chat" and c.value != "none":
+            if attr == "paid" and a.source == "slack" and c.value != "none":
                 forms = [f"{float(c.value.split('|')[1]):,.2f}"]
             if not forms:
                 continue

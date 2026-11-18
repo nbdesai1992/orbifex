@@ -43,6 +43,16 @@ class Workspace:
                 "body": body.get_content() if body else "",
             })
         self.mail.sort(key=lambda m: m["date"])
+        self.orders, self.refunds = {}, {}       # retailer orders, read from the confirmation and refund mails
+        for m in self.mail:
+            number = re.search(r"Order number: (\S+)", m["body"])
+            total = re.search(r"Order total: " + MONEY, m["body"])
+            placed = re.search(r"Placed on: " + DAY, m["body"])
+            if number and total and placed:
+                self.orders[number.group(1)] = {"total": to_money(total.group(1)), "placed": to_day(placed.group(1))}
+            refund = re.search(r"Refund issued for order (\S+): " + MONEY, m["body"])
+            if refund:                           # an estimate is worded differently and does not count
+                self.refunds[refund.group(1)] = self.refunds.get(refund.group(1), 0.0) + to_money(refund.group(2))
         self.events = self._events(self.root / "calendar" / "calendar.ics")
         organizers = [e["organizer"] for e in self.events if e.get("organizer")]
         self.me = max(set(organizers), key=organizers.count)
@@ -151,6 +161,12 @@ def solve(ws: Workspace, spec: dict) -> dict:
         docs = ws.documents(spec["org"], spec["month"])
         met = ws.meeting(spec["org"], spec["month"])["start"].date()
         return {"docs_received_on": docs.isoformat(), "meeting_on": met.isoformat(), "before_meeting": docs < met}
+    if fam == "order_net":
+        order = ws.orders[spec["order"]]
+        return {"amount": round(order["total"] - ws.refunds.get(spec["order"], 0.0), 2)}
+    if fam == "sweep_orders":
+        ids = [k for k, o in ws.orders.items() if o["placed"].strftime("%B %Y") == spec["month"]]
+        return {"orders": len(ids), "total": round(sum(ws.orders[k]["total"] - ws.refunds.get(k, 0.0) for k in ids), 2)}
     if fam.startswith("sweep_"):
         month = spec["month"]
         rows = [(o, ws.invoice(o, month)) for o in ws.orgs(month)]

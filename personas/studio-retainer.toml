@@ -26,6 +26,20 @@ role = "Part-time studio manager"
 [bank]
 name = "Cascadia Credit Union"
 email = "notify@cascadiacu.example"
+account = "Business Checking ending 2290"
+recurring = [["STUDIO RENT ALDER STREET LOFTS", -1375.00, 1], ["FONTWORKS LICENSE SUBSCRIPTION", -54.00, 4],
+  ["CLOUD STORAGE PLAN", -29.99, 9], ["CONTRACTOR PAYMENT J TRAN", -960.00, 15],
+  ["OWNER DRAW M OKONKWO", -3600.00, 26], ["CONTRACTOR PAYMENT J TRAN", -960.00, 28]]
+card_merchants = ["ESPRESSO BAR", "TRANSIT PASS", "COURIER DROP", "LUNCH CART", "RIDESHARE", "BIKE SHOP", "PHOTO LAB"]
+
+[shop]
+name = "Halden Art and Print Supply"
+email = "orders@haldensupply.example"
+prefix = "HA"
+items = [["Proofing paper, 100 sheets", 48.00], ["Pantone swatch book", 132.00], ["Cutting mat, A2", 36.50],
+  ["Ink set, 6 colours", 94.75], ["Portfolio case", 78.20], ["Foam board, pack of 10", 41.30],
+  ["Drawing tablet pen nibs", 18.90], ["Spray mount, 400 ml", 21.45], ["Bone folder set", 16.80],
+  ["Sample binder, linen", 52.60], ["Kraft mailers, pack of 50", 29.95], ["Light pad, A3", 88.40]]
 
 [vocab]
 counterparty = "client"

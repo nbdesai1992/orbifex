@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 
 def rng(*keys) -> random.Random:
@@ -50,18 +50,24 @@ class Tier:
     cancelled_leftovers: bool  # rescheduled meetings leave a cancelled event behind
     duplicate_share: float     # share of drive files duplicated or misfiled
     statement_rows: tuple[int, int]
+    extra_orders: int = 0      # unrelated retailer orders per month
+    refund_estimates: bool = False   # a refund is preceded by an estimate that turns out too high
 
 
 TIERS: dict[int, Tier] = {
     1: Tier(1, 0, False, 0, ("mail", "calendar"), 2, 0.0, 0, 0.0, 0, 0.0,
-            False, False, False, False, 0.0, (8, 14)),
-    2: Tier(2, 3, False, 1, ("mail", "calendar", "drive"), 6, 0.0, 0, 0.0, 0, 0.0,
-            False, False, False, False, 0.0, (25, 45)),
-    3: Tier(3, 5, True, 4, ("mail", "calendar", "drive", "chat"), 14, 0.5, 2, 0.5, 1, 0.5,
-            True, False, False, False, 0.05, (40, 80)),
-    4: Tier(4, 14, True, 7, ("mail", "calendar", "drive", "chat"), 28, 0.85, 3, 0.85, 2, 0.7,
-            True, True, True, True, 0.12, (70, 150)),
+            False, False, False, False, 0.0, (8, 14), 0, False),
+    2: Tier(2, 3, False, 1, ("mail", "calendar", "drive", "bank"), 6, 0.0, 0, 0.0, 0, 0.0,
+            False, False, False, False, 0.0, (25, 45), 1, False),
+    3: Tier(3, 5, True, 4, ("mail", "calendar", "drive", "bank", "slack", "invoicing", "timesheets"),
+            14, 0.5, 2, 0.5, 1, 0.5, True, False, False, False, 0.05, (40, 80), 3, True),
+    4: Tier(4, 14, True, 7, ("mail", "calendar", "drive", "bank", "slack", "invoicing", "timesheets", "orders"),
+            28, 0.85, 3, 0.85, 2, 0.7, True, True, True, True, 0.12, (70, 150), 6, True),
 }
+
+# First-party sources are the persona's own mail, calendar and files. The rest are
+# exports from third-party apps, each of which keeps its own copy of some facts.
+THIRD_PARTY = ("bank", "slack", "invoicing", "timesheets", "orders")
 
 
 # ---------------------------------------------------------------- entities
@@ -131,6 +137,30 @@ class Cycle:
 
 
 @dataclass
+class Order:
+    """One order placed with the retailer. The total and the refund are final facts."""
+    id: str
+    pm: str                    # the month the order was placed in, "2026-05"
+    core: bool
+    placed_at: dt.datetime
+    lines: list[tuple[str, int, float]]      # (item, quantity, unit price)
+    total: float
+    refund: float              # 0.0 when nothing went back
+    refund_at: dt.datetime | None = None
+    returned: str | None = None
+    estimate: float | None = None            # a superseded refund estimate, added by higher tiers
+    estimate_at: dt.datetime | None = None
+
+    @property
+    def fid(self) -> str:
+        return f"order-{self.id.lower()}/{self.pm}"
+
+    @property
+    def net(self) -> float:
+        return round(self.total - self.refund, 2)
+
+
+@dataclass
 class World:
     pack: dict
     seed: int
@@ -142,6 +172,16 @@ class World:
     core_months: list[str]
     cycles: list[Cycle]
     start: dt.date = field(default=None)  # type: ignore[assignment]
+    orders: list[Order] = field(default_factory=list)
+
+    @property
+    def order_months(self) -> list[str]:
+        """Orders are placed in the months the mailbox covers, one after each work month."""
+        return [shift_month(m, 1) for m in self.months]
+
+    @property
+    def core_order_months(self) -> list[str]:
+        return [shift_month(m, 1) for m in self.core_months]
 
     @property
     def core_orgs(self) -> list[Org]:
@@ -356,6 +396,53 @@ def _backstory(seed: int, pack: dict, tz: ZoneInfo, tier: Tier, c: Cycle,
                                  r.choice(voice["extension_reasons"]))]
 
 
+def _final_order(seed: int, pack: dict, tz: ZoneInfo, pm: str, k: int, core: bool, with_refund: bool,
+                 used: set) -> Order:
+    """Draw one order. Like a cycle, it never reads the tier."""
+    shop = pack["shop"]
+    r = rng(seed, "order", pm, k, "core" if core else "extra", "final")
+    y, m = map(int, pm.split("-"))
+    day = business_day(dt.date(y, m, r.randint(2, 22)))
+    placed = dt.datetime(day.year, day.month, day.day, r.choice([8, 12, 19, 21]), r.choice([4, 17, 38, 51]), tzinfo=tz)
+    lines = [(name, r.choice([1, 1, 2, 3]), float(price)) for name, price in r.sample(shop["items"], r.randint(2, 4))]
+    total = round(sum(q * price for _, q, price in lines), 2)
+    number = 100000 + int(short_hash(seed, "order", pm, k, core, n=8), 16) % 900000
+    while number in used:
+        number += 1
+    used.add(number)
+    order = Order(f"{shop['prefix']}-{number}", pm, core, placed, lines, total, 0.0)
+    if with_refund:                                 # one unit goes back, less a 15% restocking fee
+        name, _, price = r.choice(lines)
+        back = add_business_days(day, r.randint(5, 9))
+        order.refund = round(price - round(price * 0.15, 2), 2)
+        order.refund_at = dt.datetime(back.year, back.month, back.day, r.choice([9, 14]), r.choice([12, 41]), tzinfo=tz)
+        order.returned = name
+    return order
+
+
+def build_orders(pack: dict, tier: Tier, seed: int, tz: ZoneInfo, months: list[str], core_months: list[str]) -> list[Order]:
+    if "shop" not in pack:
+        return []
+    used: set = set()
+    orders: list[Order] = []
+    for m in core_months:                           # core first, so extras never take their numbers
+        pm = shift_month(m, 1)
+        orders.append(_final_order(seed, pack, tz, pm, 0, True, True, used))
+        orders.append(_final_order(seed, pack, tz, pm, 1, True, False, used))
+    for m in months:
+        pm = shift_month(m, 1)
+        for k in range(tier.extra_orders):
+            refund = rng(seed, "order", pm, k, "extra", "role").random() < 0.35
+            orders.append(_final_order(seed, pack, tz, pm, k, False, refund, used))
+    if tier.refund_estimates:                       # history only: the final refund is unchanged
+        for o in orders:
+            if o.refund:
+                price = next(p for name, _, p in o.lines if name == o.returned)
+                o.estimate = round(price, 2)
+                o.estimate_at = o.refund_at - dt.timedelta(days=2, hours=3)
+    return orders
+
+
 def _ranked(seed: int, cycles: list[Cycle], label: str, share: float) -> set[str]:
     """Pick a share of cycles by a fixed per-cycle priority, so tiers nest."""
     order = sorted(cycles, key=lambda c: rng(seed, c.fid, label).random())
@@ -412,7 +499,8 @@ def build_world(pack: dict, tier_level: int, seed: int) -> World:
                        c.paid_at is not None and u.random() < tier.extension_share * 0.4)
 
     start = dt.date(*map(int, shift_month(months[0], 1).split("-")), 1)
-    world = World(pack, seed, tier, tz, today, orgs, months, core_months, cycles, start)
+    world = World(pack, seed, tier, tz, today, orgs, months, core_months, cycles, start,
+                  build_orders(pack, tier, seed, tz, months, core_months))
     _assert_sane(world)
     return world
 
@@ -433,3 +521,9 @@ def _assert_sane(w: World) -> None:
             assert c.due[-1].at < c.paid_at, f"{c.fid} due date changed after payment"
         if c.role != "docs_late":
             assert c.docs_at < c.meeting[-1].value, f"{c.fid} docs after meeting without the role"
+    for o in w.orders:
+        assert o.placed_at <= end and (o.refund_at or o.placed_at) <= end, f"{o.id} has an event after today"
+        assert 0 <= o.refund < o.total, f"{o.id} refunds more than it charged"
+        if o.estimate is not None:
+            assert o.estimate > o.refund and o.placed_at < o.estimate_at < o.refund_at, f"{o.id} has a bad estimate"
+    assert len({o.id for o in w.orders}) == len(w.orders), "two orders share a number"

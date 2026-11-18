@@ -151,7 +151,45 @@ def build_tasks(w: World) -> list[Task]:
             [f"{c.fid}/hours" for c in mine],
             {"family": "hours_billed", "orgs": [org.name], "months": months}, negs))
     tasks += _sweeps(w)
+    tasks += _orders(w)
     return tasks
+
+
+def _orders(w: World) -> list[Task]:
+    """Questions about retailer orders. The answer is a total less a refund, and the refund
+    arrives as its own message, so every one of these needs a small update applied to a record."""
+    if not w.orders:
+        return []
+    shop, first = w.pack["shop"]["name"], w.pack["persona"]["first"]
+    out: list[Task] = []
+    for o in sorted((o for o in w.orders if o.core), key=lambda o: o.id):
+        negs = [{"amount": round(o.net + 1, 2)}]
+        if o.refund:
+            negs.append({"amount": o.total})
+            if o.estimate is not None:
+                negs.append({"amount": round(o.total - o.estimate, 2)})
+        else:
+            negs.append({"amount": round(o.total - 10, 2)})
+        out.append(Task(
+            f"order-{o.id.lower()}", "order_net",
+            f"How much did {first} end up paying {shop} for order {o.id}, after any refund?",
+            {"amount": "the amount charged in dollars, net of any refund"}, {"amount": o.net},
+            [f"{o.fid}/total"] + ([f"{o.fid}/refund"] if o.refund else []),
+            {"family": "order_net", "order": o.id}, negs))
+    for pm in w.core_order_months:
+        orders = sorted((o for o in w.orders if o.pm == pm), key=lambda o: o.id)
+        total, gross = round(sum(o.net for o in orders), 2), round(sum(o.total for o in orders), 2)
+        gold = {"orders": len(orders), "total": total}
+        negs = [{**gold, "orders": len(orders) + 1}, {**gold, "total": round(total + 25, 2)}]
+        negs += [{**gold, "total": gross}] if gross != total else []
+        out.append(Task(
+            f"sweep-orders-{pm}", "sweep_orders",
+            f"Across every order {first} placed with {shop} in {month_label(pm)}, how many orders were there and "
+            f"how much was charged in total after refunds?",
+            {"orders": "the number of orders", "total": "the total charged in dollars, net of refunds"}, gold,
+            [f"{o.fid}/total" for o in orders] + [f"{o.fid}/refund" for o in orders if o.refund],
+            {"family": "sweep_orders", "month": month_label(pm)}, negs, "all"))
+    return out
 
 
 def _sweeps(w: World) -> list[Task]:

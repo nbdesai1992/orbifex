@@ -135,6 +135,48 @@ class BuildContextTests(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 verify.main(str(Path(tmp) / "answer.json"), str(tests_dir), str(out))
 
+class ThirdPartyTests(unittest.TestCase):
+    """Exports from the apps around the persona: Slack, the bank, an invoicing app, a time tracker, a retailer."""
+
+    def test_order_facts_do_not_depend_on_the_tier(self):
+        for seed in (1, 7, 23):
+            base = None
+            for tier in (1, 2, 3, 4):
+                world = build_world(PACK, tier, seed)
+                core = sorted((o.id, o.pm, o.total, o.refund) for o in world.orders if o.core)
+                self.assertEqual(len(core), 4)
+                base = base or core
+                self.assertEqual(core, base, f"seed {seed} tier {tier}")
+
+    def test_each_tier_has_its_sources(self):
+        want = {1: set(), 2: {"bank"}, 3: {"bank", "slack", "invoicing", "timesheets"},
+                4: {"bank", "slack", "invoicing", "timesheets", "orders"}}
+        for tier, apps in want.items():
+            world, rendered, tasks, report = build_tier(PACK, tier, 7)
+            top = {p.split("/")[0] for p in rendered.files}
+            self.assertEqual(top - {"mail", "calendar", "drive"}, apps, f"tier {tier}")
+
+    def test_invoicing_app_is_stale_exactly_where_a_due_date_was_extended(self):
+        world, rendered, tasks, report = build_tier(PACK, 4, 7)
+        export = next(a for a in rendered.artifacts if a.path == "invoicing/invoices.csv")
+        stale = {c.fact for c in export.claims if c.fact.endswith("/due") and not c.current}
+        extended = {f"{c.fid}/due" for c in world.cycles if len(c.due) > 1}
+        self.assertTrue(extended)
+        self.assertEqual(stale, extended)
+        self.assertTrue(all(c.current for c in export.claims if c.fact.endswith("/amount")))
+
+    def test_slack_export_has_the_layout_slack_writes(self):
+        world, rendered, tasks, report = build_tier(PACK, 3, 7)
+        users = json.loads(rendered.files["slack/users.json"])
+        channels = json.loads(rendered.files["slack/channels.json"])
+        self.assertEqual([c["name"] for c in channels], ["ops"])
+        ids = {u["id"] for u in users}
+        day = next(p for p in rendered.files if p.startswith("slack/ops/"))
+        for message in json.loads(rendered.files[day]):
+            self.assertEqual(message["type"], "message")
+            self.assertIn(message["user"], ids)
+            self.assertRegex(message["ts"], r"^\d{10}\.\d{6}$")
+
 
 if __name__ == "__main__":
     unittest.main()

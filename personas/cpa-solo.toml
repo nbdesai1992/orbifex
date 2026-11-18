@@ -27,6 +27,23 @@ role = "Part-time bookkeeper"
 [bank]
 name = "Lakeshore Community Bank"
 email = "alerts@lakeshorecb.example"
+account = "Business Checking ending 4417"
+# Lines that recur on the bank export every month: description, amount, day of month.
+recurring = [["OFFICE RENT HARBORVIEW PROPERTIES", -1650.00, 1], ["LEDGERLINE SOFTWARE SUBSCRIPTION", -79.00, 5],
+  ["CITY POWER AND LIGHT AUTOPAY", -142.37, 12], ["PAYROLL M ILVES", -1480.00, 15],
+  ["OWNER DRAW D WHITFIELD", -4200.00, 25], ["PAYROLL M ILVES", -1480.00, 28]]
+card_merchants = ["CORNER COFFEE", "PARKING METER", "POSTAL COUNTER", "LUNCH COUNTER", "RIDESHARE", "FUEL STOP", "PRINT SHOP"]
+
+# A retailer the persona orders from. Orders, refunds and card charges give the
+# workspace a second kind of record that has nothing to do with client work.
+[shop]
+name = "Northfield Office Supply"
+email = "orders@northfieldsupply.example"
+prefix = "NS"
+items = [["Copy paper, case of 10 reams", 54.99], ["Toner cartridge, black", 89.50], ["Banker boxes, pack of 12", 38.75],
+  ["Hanging file folders, box of 50", 27.40], ["Desk lamp, LED", 64.00], ["Label maker tape, 3 pack", 31.20],
+  ["Wireless keyboard", 72.95], ["Printer drum unit", 118.00], ["Shredder oil, 12 oz", 14.60], ["Monitor stand", 46.25],
+  ["Legal pads, pack of 12", 22.80], ["Scanner feed rollers", 58.30]]
 
 # How the engagement cycle is worded for this persona.
 [vocab]
