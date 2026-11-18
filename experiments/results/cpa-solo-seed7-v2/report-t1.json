@@ -1,0 +1,572 @@
+{
+ "gates": {
+  "answer_derivable_from_files": {
+   "passed": true,
+   "checked": 47,
+   "failures": []
+  },
+  "verifier_rejects_wrong_answers": {
+   "passed": true,
+   "checked": 169,
+   "failures": []
+  },
+  "no_leak_in_workspace": {
+   "passed": true,
+   "checked": 59,
+   "failures": []
+  },
+  "claims_match_text": {
+   "passed": true,
+   "checked": 53,
+   "failures": []
+  },
+  "nothing_dated_after_today": {
+   "passed": true,
+   "checked": 89,
+   "failures": []
+  },
+  "passed": true
+ },
+ "measure": {
+  "environment": {
+   "tier": 1,
+   "orgs": 3,
+   "months": 2,
+   "cycles": 6,
+   "files": 59,
+   "units": 89,
+   "units_by_source": {
+    "calendar": 31,
+    "mail": 58
+   },
+   "bytes": 50150,
+   "approx_tokens": 12537,
+   "planted": {},
+   "noise_units": 49,
+   "tasks": 47,
+   "mean_stale_mentions": 0.0,
+   "median_worst_rank": 3,
+   "probe_first_hit": 1.0,
+   "probe_latest_wins": 1.0
+  },
+  "tasks": {
+   "meeting-brightwater-yoga-2026-04": {
+    "family": "meeting_time",
+    "scope": "core",
+    "needed_facts": 1,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 1,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "details-brightwater-yoga-2026-04": {
+    "family": "meeting_details",
+    "scope": "core",
+    "needed_facts": 1,
+    "min_sources": 1,
+    "mentions": 1,
+    "stale_mentions": 0,
+    "worst_rank": 1,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "invoice-brightwater-yoga-2026-04": {
+    "family": "invoice_total",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 1,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "payment-brightwater-yoga-2026-04": {
+    "family": "payment_status",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 5,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "docs-brightwater-yoga-2026-04": {
+    "family": "docs_before_meeting",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 3,
+    "stale_mentions": 0,
+    "worst_rank": 3,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "meeting-brightwater-yoga-2026-05": {
+    "family": "meeting_time",
+    "scope": "core",
+    "needed_facts": 1,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 2,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "details-brightwater-yoga-2026-05": {
+    "family": "meeting_details",
+    "scope": "core",
+    "needed_facts": 1,
+    "min_sources": 1,
+    "mentions": 1,
+    "stale_mentions": 0,
+    "worst_rank": 2,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "invoice-brightwater-yoga-2026-05": {
+    "family": "invoice_total",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 3,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "payment-brightwater-yoga-2026-05": {
+    "family": "payment_status",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 5,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "docs-brightwater-yoga-2026-05": {
+    "family": "docs_before_meeting",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 3,
+    "stale_mentions": 0,
+    "worst_rank": 2,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "meeting-harlow-dental-2026-04": {
+    "family": "meeting_time",
+    "scope": "core",
+    "needed_facts": 1,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 1,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "details-harlow-dental-2026-04": {
+    "family": "meeting_details",
+    "scope": "core",
+    "needed_facts": 1,
+    "min_sources": 1,
+    "mentions": 1,
+    "stale_mentions": 0,
+    "worst_rank": 1,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "invoice-harlow-dental-2026-04": {
+    "family": "invoice_total",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 2,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "payment-harlow-dental-2026-04": {
+    "family": "payment_status",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 5,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "docs-harlow-dental-2026-04": {
+    "family": "docs_before_meeting",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 3,
+    "stale_mentions": 0,
+    "worst_rank": 2,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "meeting-harlow-dental-2026-05": {
+    "family": "meeting_time",
+    "scope": "core",
+    "needed_facts": 1,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 2,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "details-harlow-dental-2026-05": {
+    "family": "meeting_details",
+    "scope": "core",
+    "needed_facts": 1,
+    "min_sources": 1,
+    "mentions": 1,
+    "stale_mentions": 0,
+    "worst_rank": 2,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "invoice-harlow-dental-2026-05": {
+    "family": "invoice_total",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 3,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "docs-harlow-dental-2026-05": {
+    "family": "docs_before_meeting",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 3,
+    "stale_mentions": 0,
+    "worst_rank": 3,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "meeting-kessler-landscaping-2026-04": {
+    "family": "meeting_time",
+    "scope": "core",
+    "needed_facts": 1,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 1,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "details-kessler-landscaping-2026-04": {
+    "family": "meeting_details",
+    "scope": "core",
+    "needed_facts": 1,
+    "min_sources": 1,
+    "mentions": 1,
+    "stale_mentions": 0,
+    "worst_rank": 1,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "invoice-kessler-landscaping-2026-04": {
+    "family": "invoice_total",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 1,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "payment-kessler-landscaping-2026-04": {
+    "family": "payment_status",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 7,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "docs-kessler-landscaping-2026-04": {
+    "family": "docs_before_meeting",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 3,
+    "stale_mentions": 0,
+    "worst_rank": 2,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "meeting-kessler-landscaping-2026-05": {
+    "family": "meeting_time",
+    "scope": "core",
+    "needed_facts": 1,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 2,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "details-kessler-landscaping-2026-05": {
+    "family": "meeting_details",
+    "scope": "core",
+    "needed_facts": 1,
+    "min_sources": 1,
+    "mentions": 1,
+    "stale_mentions": 0,
+    "worst_rank": 4,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "invoice-kessler-landscaping-2026-05": {
+    "family": "invoice_total",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 1,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "payment-kessler-landscaping-2026-05": {
+    "family": "payment_status",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 5,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "docs-kessler-landscaping-2026-05": {
+    "family": "docs_before_meeting",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 3,
+    "stale_mentions": 0,
+    "worst_rank": 4,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "total-invoiced": {
+    "family": "total_invoiced",
+    "scope": "core",
+    "needed_facts": 6,
+    "min_sources": 1,
+    "mentions": 6,
+    "stale_mentions": 0,
+    "worst_rank": 15,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "unpaid-invoices": {
+    "family": "unpaid_invoices",
+    "scope": "core",
+    "needed_facts": 12,
+    "min_sources": 1,
+    "mentions": 11,
+    "stale_mentions": 0,
+    "worst_rank": 22,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "late-payers": {
+    "family": "late_payers",
+    "scope": "core",
+    "needed_facts": 10,
+    "min_sources": 1,
+    "mentions": 10,
+    "stale_mentions": 0,
+    "worst_rank": 33,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "hours-harlow-dental": {
+    "family": "hours_billed",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 7,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "hours-kessler-landscaping": {
+    "family": "hours_billed",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 2,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "hours-brightwater-yoga": {
+    "family": "hours_billed",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 8,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "sweep-total-2026-04": {
+    "family": "sweep_total",
+    "scope": "all",
+    "needed_facts": 3,
+    "min_sources": 1,
+    "mentions": 3,
+    "stale_mentions": 0,
+    "worst_rank": 3,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "sweep-unpaid-2026-04": {
+    "family": "sweep_unpaid",
+    "scope": "all",
+    "needed_facts": 6,
+    "min_sources": 1,
+    "mentions": 6,
+    "stale_mentions": 0,
+    "worst_rank": 7,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "sweep-late-2026-04": {
+    "family": "sweep_late",
+    "scope": "all",
+    "needed_facts": 6,
+    "min_sources": 1,
+    "mentions": 6,
+    "stale_mentions": 0,
+    "worst_rank": 35,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "sweep-total-2026-05": {
+    "family": "sweep_total",
+    "scope": "all",
+    "needed_facts": 3,
+    "min_sources": 1,
+    "mentions": 3,
+    "stale_mentions": 0,
+    "worst_rank": 8,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "sweep-unpaid-2026-05": {
+    "family": "sweep_unpaid",
+    "scope": "all",
+    "needed_facts": 6,
+    "min_sources": 1,
+    "mentions": 5,
+    "stale_mentions": 0,
+    "worst_rank": 8,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "sweep-late-2026-05": {
+    "family": "sweep_late",
+    "scope": "all",
+    "needed_facts": 4,
+    "min_sources": 1,
+    "mentions": 4,
+    "stale_mentions": 0,
+    "worst_rank": 39,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "order-ns-111630": {
+    "family": "order_net",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 7,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "order-ns-180016": {
+    "family": "order_net",
+    "scope": "core",
+    "needed_facts": 2,
+    "min_sources": 1,
+    "mentions": 2,
+    "stale_mentions": 0,
+    "worst_rank": 4,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "order-ns-346398": {
+    "family": "order_net",
+    "scope": "core",
+    "needed_facts": 1,
+    "min_sources": 1,
+    "mentions": 1,
+    "stale_mentions": 0,
+    "worst_rank": 4,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "order-ns-554940": {
+    "family": "order_net",
+    "scope": "core",
+    "needed_facts": 1,
+    "min_sources": 1,
+    "mentions": 1,
+    "stale_mentions": 0,
+    "worst_rank": 4,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "sweep-orders-2026-05": {
+    "family": "sweep_orders",
+    "scope": "all",
+    "needed_facts": 3,
+    "min_sources": 1,
+    "mentions": 3,
+    "stale_mentions": 0,
+    "worst_rank": 11,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   },
+   "sweep-orders-2026-06": {
+    "family": "sweep_orders",
+    "scope": "all",
+    "needed_facts": 3,
+    "min_sources": 1,
+    "mentions": 3,
+    "stale_mentions": 0,
+    "worst_rank": 13,
+    "probe_first_hit": true,
+    "probe_latest_wins": true
+   }
+  }
+ }
+}

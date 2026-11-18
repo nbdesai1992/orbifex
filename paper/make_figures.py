@@ -2,7 +2,7 @@
 
     python paper/make_figures.py            # needs matplotlib
 
-Reads experiments/results/cpa-solo-seed7/ and writes paper/figures/*.pdf.
+Reads experiments/results/cpa-solo-seed7-v2/ and writes paper/figures/*.pdf.
 One accent hue plus neutrals, thin marks, direct labels at line ends.
 """
 from __future__ import annotations
@@ -16,7 +16,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-RES = ROOT / "experiments" / "results" / "cpa-solo-seed7"
+RES = ROOT / "experiments" / "results" / "cpa-solo-seed7-v2"
 OUT = Path(__file__).parent / "figures"
 ACCENT, INK, GREY, GRID = "#b4532f", "#1b1b1a", "#8b8882", "#e7e4df"
 TIERS = [1, 2, 3, 4]

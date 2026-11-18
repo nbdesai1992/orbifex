@@ -32,23 +32,23 @@ What the slice does:
 
 - **Persona pack** (`personas/*.toml`): who exists, what the work is called, how people write, and what the noise looks like. Two packs ship: a solo CPA and an independent designer on retainers.
 - **World** (`world.py`): final facts are drawn from a random stream keyed by seed, entity and month, never by tier. Tiers add superseded history, look-alike counterparties and volume around the same truth.
-- **Sources** (`render.py`): `.eml` mail, an `.ics` calendar, a drive of files and a chat export. Every rendered unit records the facts it states and whether each is current.
-- **Tasks** (`tasks.py`): eight families whose answers are identical at every tier, and three sweep families whose scope grows with the tier.
+- **Sources** (`render.py`): the persona's own `.eml` mail, `.ics` calendar and drive, plus exports from five third-party apps: a Slack workspace, the bank, an invoicing app, a time tracker and a retailer's order history. Every rendered unit records the facts it states and whether each is current. The invoicing app is stale on purpose: it keeps each invoice's original due date, because extensions agreed over email never reach it.
+- **Tasks** (`tasks.py`): ten needle families whose answers are identical at every tier, and four sweep families whose scope grows with the tier. 47 tasks per tier.
 - **Checks** (`checks.py`): a second solver (`oracle.py`) must derive every answer from the rendered files, the verifier must reject known wrong answers, nothing may leak, and difficulty measures must not fall as the tier rises.
 - **Harbor export** (`harbor.py`): one self-contained task directory per task, separate verifier, pinned images, non-root agent. Files that differ between tasks and sit in a Docker build context carry a content hash in their names, because Docker reuses a same-named file across build contexts when size and timestamp match.
 
 What it does not do yet: prose is rendered from templates (the artifact forge and its realism checks in section 4 are not built), tasks are read-only, and there is one engagement-cycle engine. `experiments/claude_pilot.py` runs a headless agent over the tiers to measure difficulty.
 
-First pilot (seed 7, `cpa-solo`, Claude Haiku 5.5 with Read, Grep, Glob and Write only), raw runs in [`experiments/results/cpa-solo-seed7/`](experiments/results/cpa-solo-seed7/):
+Pilot on the eight-source version (seed 7, `cpa-solo`, Claude Haiku 5.5 with Read, Grep, Glob and Write only), raw runs in [`experiments/results/cpa-solo-seed7-v2/`](experiments/results/cpa-solo-seed7-v2/):
 
 | | Tier 1 | Tier 2 | Tier 3 | Tier 4 |
 |---|---|---|---|---|
-| Needle tasks, 35 runs per tier | 35 | 35 | 35 | 35 |
-| Sweep tasks, 18 runs per tier | 18 | 18 | 17 | 17 |
+| Needle tasks, 39 runs per tier | 39 | 39 | 38 | 39 |
+| Sweep tasks, 24 runs per tier | 24 | 24 | 18 | 21 |
 | First-hit reading policy, needle tasks | 100% | 100% | 69% | 49% |
-| Latest-wins reading policy, needle tasks | 100% | 100% | 66% | 63% |
+| Latest-wins reading policy, needle tasks | 100% | 100% | 69% | 67% |
 
-Both misses are `sweep-late-2026-04`, and each equals the planted wrong answer computed from the original due dates, with the due-date extensions ignored. The tiers raised cost (sweep tasks went from 1.1 to 6.8 cents per run) far more than they raised error, so the next step is to calibrate tiers against a solver's pass rate and to add updates that are implied instead of stated.
+Eight of the ten misses are the late-payer sweep, and each equals the planted wrong answer computed from original due dates. Ablation: with only `invoicing/` deleted from the tier 3 and tier 4 workspaces, the same questions went from 4 of 12 correct to 12 of 12. The earlier four-source version (210 of 212) is in [`experiments/results/cpa-solo-seed7/`](experiments/results/cpa-solo-seed7/). Volume raised cost and barely moved accuracy; one source that lags did the damage.
 
 ---
 
