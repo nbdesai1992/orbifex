@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 374" width="680" height="374" role="img" aria-labelledby="fig-title fig-desc">
+<title id="fig-title">Share of runs answered correctly at each workspace size</title>
+<desc id="fig-desc">Three panels show runs answered correctly at workspace sizes of 59, 274, 1,319, 4,225 files. Lookup questions were answered correctly in 39, 39, 38, 39 of 39 runs, and sweep questions in 24, 24, 18, 21 of 24. The late-payer sweep question alone was answered correctly in 6, 6, 1, 3 of 6 runs, and 4 of 12 at the two largest sizes became 12 of 12 when the invoicing export was deleted.</desc>
+<g font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="#6e7b88">
+<text x="60" y="20" font-size="15" text-anchor="start" font-weight="600">Share of runs answered correctly at each workspace size</text>
+<polyline points="60,40 86,40" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="73" cy="40" r="4.5" fill="#2a78d6"/>
+<text x="94" y="44.5" font-size="13" text-anchor="start">Workspace as generated</text>
+<polyline points="276,40 285,40" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="293,40 302,40" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="289" cy="40" r="4" fill="none" stroke="#d95926" stroke-width="2"/>
+<text x="310" y="44.5" font-size="13" text-anchor="start">Invoicing export deleted</text>
+<text x="52" y="122.5" font-size="13" text-anchor="end">100%</text>
+<text x="52" y="197.5" font-size="13" text-anchor="end">50%</text>
+<text x="52" y="272.5" font-size="13" text-anchor="end">0%</text>
+<text x="52" y="290" font-size="13" text-anchor="end">files</text>
+<text x="52" y="312" font-size="13" text-anchor="end">correct</text>
+<text x="60" y="78" font-size="14" text-anchor="start" font-weight="600">Lookup questions</text>
+<text x="60" y="97" font-size="13" text-anchor="start">39 runs per size</text>
+<line x1="60" x2="254" y1="118" y2="118" stroke="#6e7b88" stroke-opacity="0.3" stroke-width="1"/>
+<line x1="60" x2="254" y1="193" y2="193" stroke="#6e7b88" stroke-opacity="0.3" stroke-width="1"/>
+<line x1="60" x2="254" y1="268" y2="268" stroke="#6e7b88" stroke-opacity="0.3" stroke-width="1"/>
+<polyline points="82,118 132,118 182,121.8 232,118" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="82" cy="118" r="4.5" fill="#2a78d6"/>
+<circle cx="132" cy="118" r="4.5" fill="#2a78d6"/>
+<circle cx="182" cy="121.8" r="4.5" fill="#2a78d6"/>
+<circle cx="232" cy="118" r="4.5" fill="#2a78d6"/>
+<text x="82" y="290" font-size="13" text-anchor="middle">59</text>
+<text x="82" y="312" font-size="13" text-anchor="middle">39</text>
+<text x="132" y="290" font-size="13" text-anchor="middle">274</text>
+<text x="132" y="312" font-size="13" text-anchor="middle">39</text>
+<text x="182" y="290" font-size="13" text-anchor="middle">1,319</text>
+<text x="182" y="312" font-size="13" text-anchor="middle">38</text>
+<text x="232" y="290" font-size="13" text-anchor="middle">4,225</text>
+<text x="232" y="312" font-size="13" text-anchor="middle">39</text>
+<text x="267" y="78" font-size="14" text-anchor="start" font-weight="600">Sweep questions</text>
+<text x="267" y="97" font-size="13" text-anchor="start">24 runs per size</text>
+<line x1="267" x2="461" y1="118" y2="118" stroke="#6e7b88" stroke-opacity="0.3" stroke-width="1"/>
+<line x1="267" x2="461" y1="193" y2="193" stroke="#6e7b88" stroke-opacity="0.3" stroke-width="1"/>
+<line x1="267" x2="461" y1="268" y2="268" stroke="#6e7b88" stroke-opacity="0.3" stroke-width="1"/>
+<polyline points="289,118 339,118 389,155.5 439,136.8" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="289" cy="118" r="4.5" fill="#2a78d6"/>
+<circle cx="339" cy="118" r="4.5" fill="#2a78d6"/>
+<circle cx="389" cy="155.5" r="4.5" fill="#2a78d6"/>
+<circle cx="439" cy="136.8" r="4.5" fill="#2a78d6"/>
+<text x="289" y="290" font-size="13" text-anchor="middle">59</text>
+<text x="289" y="312" font-size="13" text-anchor="middle">24</text>
+<text x="339" y="290" font-size="13" text-anchor="middle">274</text>
+<text x="339" y="312" font-size="13" text-anchor="middle">24</text>
+<text x="389" y="290" font-size="13" text-anchor="middle">1,319</text>
+<text x="389" y="312" font-size="13" text-anchor="middle">18</text>
+<text x="439" y="290" font-size="13" text-anchor="middle">4,225</text>
+<text x="439" y="312" font-size="13" text-anchor="middle">21</text>
+<text x="474" y="78" font-size="14" text-anchor="start" font-weight="600">Late-payer sweep question</text>
+<text x="474" y="97" font-size="13" text-anchor="start">6 runs per size</text>
+<line x1="474" x2="668" y1="118" y2="118" stroke="#6e7b88" stroke-opacity="0.3" stroke-width="1"/>
+<line x1="474" x2="668" y1="193" y2="193" stroke="#6e7b88" stroke-opacity="0.3" stroke-width="1"/>
+<line x1="474" x2="668" y1="268" y2="268" stroke="#6e7b88" stroke-opacity="0.3" stroke-width="1"/>
+<path d="M596 233 V127 M592.5 132 L596 127 L599.5 132" fill="none" stroke="#6e7b88" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M646 183 V127 M642.5 132 L646 127 L649.5 132" fill="none" stroke="#6e7b88" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="496,118 546,118 596,243 646,193" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="496" cy="118" r="4.5" fill="#2a78d6"/>
+<circle cx="546" cy="118" r="4.5" fill="#2a78d6"/>
+<circle cx="596" cy="243" r="4.5" fill="#2a78d6"/>
+<circle cx="646" cy="193" r="4.5" fill="#2a78d6"/>
+<text x="496" y="290" font-size="13" text-anchor="middle">59</text>
+<text x="496" y="312" font-size="13" text-anchor="middle">6</text>
+<text x="546" y="290" font-size="13" text-anchor="middle">274</text>
+<text x="546" y="312" font-size="13" text-anchor="middle">6</text>
+<text x="596" y="290" font-size="13" text-anchor="middle">1,319</text>
+<text x="596" y="312" font-size="13" text-anchor="middle">1</text>
+<text x="646" y="290" font-size="13" text-anchor="middle">4,225</text>
+<text x="646" y="312" font-size="13" text-anchor="middle">3</text>
+<polyline points="600,118 642,118" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="596" cy="118" r="4" fill="none" stroke="#d95926" stroke-width="2"/>
+<circle cx="646" cy="118" r="4" fill="none" stroke="#d95926" stroke-width="2"/>
+<circle cx="479" cy="327.5" r="4" fill="none" stroke="#d95926" stroke-width="2"/>
+<text x="488" y="332" font-size="13" text-anchor="start">export deleted</text>
+<text x="596" y="332" font-size="13" text-anchor="middle">6</text>
+<text x="646" y="332" font-size="13" text-anchor="middle">6</text>
+<text x="60" y="360" font-size="13" text-anchor="start">The four sizes hold 12.5K, 69.9K, 411K and 1.77M tokens, counted as bytes divided by four.</text>
+</g>
+</svg>
