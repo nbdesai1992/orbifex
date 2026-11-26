@@ -3,6 +3,8 @@ name = "orbifex"
 version = "0.2.0"
 description = "From a persona to a checked agent environment, exported as Harbor tasks."
 requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Neal Desai" }]
 dependencies = []
 
 [project.scripts]

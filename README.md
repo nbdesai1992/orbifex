@@ -96,13 +96,15 @@ scripts/reproduce.sh python3.11
 
 The script takes the Python interpreter as its argument and needs `curl` and `tar`. It regenerates the seed-7 dataset in a temporary folder with the `ladder` command above, prints one sha256 for the generated task tree, downloads and unpacks the published archive, compares the two trees file by file, compares the regenerated check reports with the committed ones, and prints both tables and the headline numbers on this page from the JSONL files. It calls no model and takes under a minute.
 
-On 2026-11-26 the regenerated tree was file for file identical to the published [`cpa-solo-harbor-v2.tar.gz`](https://nealdes.ai/assets/orbifex/cpa-solo-harbor-v2.tar.gz). Both hold 2,256 files under the four `cpa-solo-t*` folders and give this tree checksum.
+On 2026-11-26 the regenerated tree was file for file identical to the published archive of version 2.1, [`cpa-solo-harbor-v2.1.tar.gz`](https://huggingface.co/datasets/nealdesai/orbifex-cpa-solo/blob/main/archives/cpa-solo-harbor-v2.1.tar.gz). Both hold 2,256 files under the four `cpa-solo-t*` folders and give this tree checksum.
 
 ```
-25228b794204f9e84216952ec6fc75b49d4a405bce27d883177a9876fd5f946f
+64dc587af8b962a871866e88278c8f168910ced882d73d491e7788c1e6103dca
 ```
 
-I got the same checksum with Python 3.11.10 on macOS and with Python 3.11.18 and 3.13.18 in Linux containers. The checksum covers file paths and contents, and [`scripts/tree_sha256.py`](scripts/tree_sha256.py) shows how to get it with `shasum` alone. The archive holds one more file, its own `README.md`, which the generator does not write. The archive file itself had sha256 `339e7731134ff23817af1509e0ea615406b01ce977b2d9dbba8ed2aadea28153` on that day.
+Version 2.1 differs from version 2, which the pilot ran on, in the names of three senders of background mail. They had borrowed the names of real organizations and are now fictional. Every question, answer, file count and token count is the same, and three tasks' `worst_rank` values moved, two by one place and one by three. The tag `dataset-v2` marks the commit that rebuilds version 2 file for file, with tree checksum `25228b794204f9e84216952ec6fc75b49d4a405bce27d883177a9876fd5f946f`, and that archive stays at [`cpa-solo-harbor-v2.tar.gz`](https://nealdes.ai/assets/orbifex/cpa-solo-harbor-v2.tar.gz).
+
+I got the same checksum with Python 3.11.10 on macOS and with Python 3.11.18 and 3.13.18 in Linux containers. The checksum covers file paths and contents, and [`scripts/tree_sha256.py`](scripts/tree_sha256.py) shows how to get it with `shasum` alone. The archive holds one more file, its own `README.md`, which the generator does not write. The archive file itself has sha256 `85c86a6243555725dc3764dbafa81747cc22e45b0c262a1bc657726a57522f2f`.
 
 The tests hold this page to the data. `python3.11 -m unittest discover -s tests` fails if either table, a headline number or the figure differs from what [`scripts/results_table.py`](scripts/results_table.py) counts in the records.
 
@@ -126,12 +128,17 @@ Running the model again is a separate step that costs money. [`experiments/claud
 - [Part 1, the anatomy of an agent eval](https://nealdes.ai/articles/harbor-format), explains the Harbor task format.
 - [Part 2, what makes a workspace hard for an AI agent](https://nealdes.ai/articles/persona-to-environment), is the illustrated write-up of this work.
 - [The paper](https://nealdes.ai/assets/orbifex/orbifex-paper.pdf) has the method and results in one place. Its source is in [`paper/`](paper/), and its two data figures are also in `docs/` as [`paper-results.svg`](docs/paper-results.svg) and [`paper-tiers.svg`](docs/paper-tiers.svg).
-- [`cpa-solo-harbor-v2.tar.gz`](https://nealdes.ai/assets/orbifex/cpa-solo-harbor-v2.tar.gz) is the eight-source dataset of 188 tasks, and [`cpa-solo-harbor.tar.gz`](https://nealdes.ai/assets/orbifex/cpa-solo-harbor.tar.gz) is the earlier four-source dataset of 164 tasks.
+- [The dataset on Hugging Face](https://huggingface.co/datasets/nealdesai/orbifex-cpa-solo), `nealdesai/orbifex-cpa-solo`, holds version 2.1, the eight-source dataset of 188 tasks, and version 1.1, the earlier four-source dataset of 164 tasks, each as one archive with a browsable table of its questions.
+- The archives the pilots ran on, before three background senders were renamed, stay at [`cpa-solo-harbor-v2.tar.gz`](https://nealdes.ai/assets/orbifex/cpa-solo-harbor-v2.tar.gz) and [`cpa-solo-harbor.tar.gz`](https://nealdes.ai/assets/orbifex/cpa-solo-harbor.tar.gz).
 - [harbor-inspect](https://github.com/nbdesai1992/harbor-inspect) is a companion tool that prints what is inside any Harbor task and flags the build-context fault.
-- [`experiments/results/`](experiments/results/) holds every run record, 616 in all.
+- [`experiments/results/`](experiments/results/) holds every run record, 616 in all. The records were made on versions 1 and 2, and `cpa-solo-seed7-v2.1/` holds the check reports of the version 2.1 build.
 - [`docs/design.md`](docs/design.md) is the design history, the document this repository started with on 2026-09-27.
 - [`research/`](research/README.md) holds the reading notes and bibliography behind that design.
 - [`CHANGELOG.md`](CHANGELOG.md) dates each step from the design to this page.
+
+## What is the license?
+
+The code and the datasets are under the MIT license in [`LICENSE`](LICENSE).
 
 ## How do I cite it?
 

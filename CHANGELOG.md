@@ -4,7 +4,15 @@ Entries are dated by commit and listed newest first. Run counts come from the JS
 
 ## 2026-11-26
 
-The repository became public, and the README was rebuilt around what the pilot found.
+The repository became public, the README was rebuilt around what the pilot found, and the dataset was reissued as version 2.1.
+
+- Three senders of background mail in `personas/cpa-solo.toml` had borrowed the names of real organizations. They are now fictional, and one message body that named a real portal was reworded. This changes the seed-7 build, so the dataset was reissued as version 2.1 (and the four-source dataset as 1.1). Every question, answer, file count and token count is unchanged, and three tasks' `worst_rank` values moved, two by one place and one by three.
+- Both versions are on Hugging Face as `nealdesai/orbifex-cpa-solo`. Harbor 0.26.0's oracle scored 1 and its no-op agent 0 on all 188 tasks of 2.1 and all 164 of 1.1, from unpacked copies of the archives.
+- `scripts/reproduce.sh` now checks version 2.1, whose tree sha256 is `64dc587af8b962a871866e88278c8f168910ced882d73d491e7788c1e6103dca`, against the archive on Hugging Face. The tag `dataset-v2` marks the commit that rebuilds version 2, the one the pilot ran on, and `dataset-v2.1` marks this one. The pilot has not been rerun on 2.1.
+- The check reports of the 2.1 build are in `experiments/results/cpa-solo-seed7-v2.1/`. The pilot records and the version 2 reports stay in `cpa-solo-seed7-v2/`.
+- The code and the datasets are now under the MIT license.
+
+Earlier the same day:
 
 - The README now opens with the result and one figure, `docs/accuracy-by-size.svg`, drawn from the run records by `scripts/make_readme_figure.py`.
 - The September design document moved from the README to `docs/design.md`.

@@ -273,7 +273,7 @@ contact = "Nora Whitlock"
 
 # Mail that has nothing to do with any client. Volume rises with the tier.
 [[noise]]
-sender = "Ohio Society of CPAs <news@ohiocpa.example>"
+sender = "Vale Society of CPAs <news@valecpa.example>"
 subjects = ["This week: CPE deadlines and member news", "Tax practice update for {mon}", "Register now: ethics webinar"]
 bodies = [
   "This month's update covers changes to estimated payment safe harbors, a reminder about CPE reporting, and a members-only webinar on Thursday at 2:00 PM. Early registration is $45.00 through {date}.",
@@ -289,7 +289,7 @@ bodies = [
 ]
 
 [[noise]]
-sender = "Columbus Parks & Rec <programs@columbusparks.example>"
+sender = "Ashgrove Parks & Rec <programs@ashgroveparks.example>"
 subjects = ["Summer swim lessons: registration open", "Field closure notice", "Your registration receipt"]
 bodies = [
   "Registration for the next session opens {date} at 8:00 AM. Classes meet Tuesdays and Thursdays at 4:30 PM. The fee is $72.00 per child.",
@@ -313,10 +313,10 @@ bodies = [
 ]
 
 [[noise]]
-sender = "IRS e-Services <no-reply@irs-eservices.example>"
+sender = "Filewell Vault <no-reply@filewellvault.example>"
 subjects = ["Secure message available", "PTIN renewal reminder", "Transcript request completed"]
 bodies = [
-  "A new secure message is available in your e-Services mailbox. Messages are retained for 30 days.",
+  "A new secure message is available in your tax portal mailbox. Messages are retained for 30 days.",
   "Your transcript request submitted on {date} has completed. Retrieve it within 120 hours.",
 ]
 

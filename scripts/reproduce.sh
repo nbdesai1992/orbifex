@@ -17,9 +17,11 @@
 set -euo pipefail
 
 PY="${1:-python3.11}"
-ARCHIVE_URL="https://nealdes.ai/assets/orbifex/cpa-solo-harbor-v2.tar.gz"
+# Version 2.1 of the dataset. To check version 2, the archive the pilot ran on, check out the tag
+# dataset-v2 and run the script there.
+ARCHIVE_URL="https://huggingface.co/datasets/nealdesai/orbifex-cpa-solo/resolve/main/archives/cpa-solo-harbor-v2.1.tar.gz"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-RESULTS="$ROOT/experiments/results/cpa-solo-seed7-v2"
+GATES="$ROOT/experiments/results/cpa-solo-seed7-v2.1"
 
 if ! command -v "$PY" >/dev/null 2>&1; then
   echo "reproduce: '$PY' was not found. Pass a Python 3.11 or newer interpreter as the first argument." >&2
@@ -72,14 +74,14 @@ fi
 echo
 echo "== 4. Compare the regenerated gate reports with the committed ones"
 for tier in 1 2 3 4; do
-  if cmp -s "$TMP/build/t$tier/report.json" "$RESULTS/report-t$tier.json"; then
+  if cmp -s "$TMP/build/t$tier/report.json" "$GATES/report-t$tier.json"; then
     echo "report-t$tier.json  identical"
   else
     echo "report-t$tier.json  DIFFERENT from $TMP/build/t$tier/report.json"
     status=1
   fi
 done
-if cmp -s "$TMP/build/ladder.json" "$RESULTS/ladder.json"; then
+if cmp -s "$TMP/build/ladder.json" "$GATES/ladder.json"; then
   echo "ladder.json     identical"
 else
   echo "ladder.json     DIFFERENT"
