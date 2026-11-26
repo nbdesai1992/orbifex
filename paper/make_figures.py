@@ -1,12 +1,15 @@
 """Draw the paper's two data figures from the pilot results.
 
-    python paper/make_figures.py            # needs matplotlib
+    python paper/make_figures.py              # needs matplotlib; writes the PDFs and the SVGs
+    python paper/make_figures.py --only svg   # writes only the SVGs and leaves the PDFs alone
 
-Reads experiments/results/cpa-solo-seed7-v2/ and writes paper/figures/*.pdf.
+Reads experiments/results/cpa-solo-seed7-v2/ and writes paper/figures/*.pdf for
+the paper and docs/paper-*.svg for the web. Both come from the same drawing.
 One accent hue plus neutrals, thin marks, direct labels at line ends.
 """
 from __future__ import annotations
 
+import argparse
 import json
 from collections import defaultdict
 from pathlib import Path
@@ -18,12 +21,14 @@ import matplotlib.pyplot as plt  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 RES = ROOT / "experiments" / "results" / "cpa-solo-seed7-v2"
 OUT = Path(__file__).parent / "figures"
+DOCS = ROOT / "docs"
 ACCENT, INK, GREY, GRID = "#b4532f", "#1b1b1a", "#8b8882", "#e7e4df"
 TIERS = [1, 2, 3, 4]
 
 plt.rcParams.update({"font.size": 8, "font.family": "sans-serif", "axes.spines.top": False, "axes.spines.right": False,
                      "axes.edgecolor": GREY, "axes.linewidth": 0.6, "xtick.color": GREY, "ytick.color": GREY,
-                     "xtick.labelcolor": INK, "ytick.labelcolor": INK, "pdf.fonttype": 42})
+                     "xtick.labelcolor": INK, "ytick.labelcolor": INK, "pdf.fonttype": 42,
+                     "svg.fonttype": "path", "svg.hashsalt": "orbifex"})   # text as outlines, stable ids
 
 
 def rows(name):
@@ -46,7 +51,21 @@ def probes(key):
     return vals
 
 
-def main():
+def save(fig, name, formats):
+    if "pdf" in formats:
+        OUT.mkdir(exist_ok=True)
+        fig.savefig(OUT / f"{name}.pdf", bbox_inches="tight", pad_inches=0.02)
+        print("wrote", (OUT / f"{name}.pdf").relative_to(ROOT))
+    if "svg" in formats:
+        fig.savefig(DOCS / f"paper-{name}.svg", bbox_inches="tight", pad_inches=0.02, metadata={"Date": None})
+        print("wrote", (DOCS / f"paper-{name}.svg").relative_to(ROOT))
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--only", choices=["pdf", "svg"], help="write one format and leave the other untouched")
+    only = ap.parse_args(argv).only
+    formats = [only] if only else ["pdf", "svg"]
     needle, sweep = by_tier(rows("pilot-needle-haiku.jsonl")), by_tier(rows("pilot-sweep-haiku.jsonl"))
     acc = lambda groups: [100 * sum(bool(r["correct"]) for r in g) / len(g) for g in groups]
     cost = lambda groups: [100 * sum(r["cost_usd"] for r in g) / len(g) for g in groups]
@@ -88,8 +107,7 @@ def main():
     b.legend(frameon=False, fontsize=7, loc="upper left", bbox_to_anchor=(0.06, 0.9), handlelength=1, borderaxespad=0)
     b.tick_params(length=0)
 
-    OUT.mkdir(exist_ok=True)
-    fig.savefig(OUT / "results.pdf", bbox_inches="tight", pad_inches=0.02)
+    save(fig, "results", formats)
 
     # Workspace size and facts needed, by tier.
     env = [json.loads((RES / f"report-t{t}.json").read_text())["measure"]["environment"] for t in TIERS]
@@ -128,8 +146,7 @@ def main():
     b.set_axisbelow(True)
     b.set_title("(b) Facts one task needs (mean)", fontsize=8, loc="left", color=INK, pad=11)
     b.tick_params(length=0)
-    fig.savefig(OUT / "tiers.pdf", bbox_inches="tight", pad_inches=0.02)
-    print("wrote", *(p.name for p in sorted(OUT.glob("*.pdf"))))
+    save(fig, "tiers", formats)
 
 
 if __name__ == "__main__":
