@@ -12,7 +12,7 @@ Agents fail on the mess in real company data, not on clean documents. A syntheti
 | EnterpriseBench ([2510.27287](https://arxiv.org/abs/2510.27287)) | Fragmented sources; access-control hierarchies |
 | WinSyn ([2609.12171](https://arxiv.org/abs/2609.12171)) | Information distributed across emails; natural ambiguity |
 | ToolSandbox ([2408.04682](https://arxiv.org/abs/2408.04682)) | Implicit preconditions between tools |
-| `persona-artifact-factory` (ours, see [08](08-own-assets.md)) | Treatment classes T0–T3 and planted discrepancies with known answers |
+| An earlier file-environment generator of ours (unpublished) | Treatment classes T0–T3 and planted discrepancies with known answers |
 
 The critique to answer (Workspace-Bench 1.0, [2605.03596](https://arxiv.org/abs/2605.03596)): synthesized files have "limited real-world dependencies". Mess must be relational (between files), not only cosmetic (within a file).
 

@@ -12,11 +12,11 @@ Think of it as a flight simulator for AI agents doing office work: a believable 
 
 *Orbis* is Latin for world, and *-fex* means maker, as in *artifex*. Orbifex is part of the [Consul](https://github.com/nbdesai1992/consul) family: Consul builds software; Orbifex builds the worlds agents are tested in.
 
-> **Status: design, plus a first engine slice.** The design below is unchanged. `src/orbifex/` now holds a working slice of it: a persona pack becomes a world, the world is rendered to mail, calendar, drive and chat at four complexity tiers, tasks are built from their answers, and everything is exported as [Harbor](https://github.com/harbor-framework/harbor) task directories. The research in [`research/`](research/README.md) stands on its own.
+> **Status: design, plus a first engine slice.** The design below is unchanged. `src/orbifex/` now holds a working slice of it: a persona pack becomes a world, the world is rendered to mail, calendar and drive plus exports from five third-party apps at four complexity tiers, tasks are built from their answers, and everything is exported as [Harbor](https://github.com/harbor-framework/harbor) task directories. The research in [`research/`](research/README.md) stands on its own.
 
 ## Engine v0: persona to Harbor tasks
 
-**Paper:** [`paper/orbifex.pdf`](paper/orbifex.pdf), a NeurIPS-style preprint of the method, the pilot and the build-context fault. An illustrated summary is at <https://nealdes.ai/articles/persona-to-environment>, and the 164 exported tasks are at <https://nealdes.ai/assets/orbifex/cpa-solo-harbor.tar.gz>.
+**Paper:** [`paper/orbifex.pdf`](paper/orbifex.pdf), a NeurIPS-style preprint of the method, the pilot and the build-context fault. An illustrated summary is at <https://nealdes.ai/articles/persona-to-environment>, and <https://nealdes.ai/articles/harbor-format> explains the task format. The 188 exported tasks are at <https://nealdes.ai/assets/orbifex/cpa-solo-harbor-v2.tar.gz>, and the earlier four-source version (164 tasks) is at <https://nealdes.ai/assets/orbifex/cpa-solo-harbor.tar.gz>.
 
 ```bash
 # Python 3.11+, standard library only
@@ -499,7 +499,7 @@ Next steps:
 3. Build the continuity checker against a hand-made mini world: a dozen artifacts with planted contradictions and planted drift, so its accuracy can be measured before it judges anything else.
 4. Measure mess for Slack, email, and spreadsheets from open sources.
 5. Review Backlot and Kiln (prior art in [research/09](research/09-adjacent-tools.md)).
-6. Settle the runtime, and decide what existing private work can move in, which also decides when this repo goes public.
+6. Settle the runtime.
 
 ---
 
