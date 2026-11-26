@@ -6,7 +6,16 @@ servers. Its answer.json is graded by the same verify.py that ships in the
 Harbor task. Results append to a JSONL file, one line per run, and finished
 runs are skipped on restart.
 
-    python experiments/claude_pilot.py BUILD_DIR --model haiku --tiers 1 2 3 4
+    python experiments/claude_pilot.py BUILD_DIR --tiers 1 2 3 4
+
+BUILD_DIR is the --out folder of `orbifex ladder ... --workspace`.
+
+The model defaults to claude-haiku-5-5, the model behind every record under
+experiments/results/. Those runs passed the alias `haiku` (the "model" field
+of each record), and Claude Code resolved it to claude-haiku-5-5 (the
+"model_ids" field, read from the run's own usage report). An alias can move to
+a newer model, so the default here is the full ID. Every run calls the model
+through the local Claude Code login and is billed to it.
 """
 from __future__ import annotations
 
@@ -23,6 +32,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from orbifex import verify  # noqa: E402
 
+MODEL = "claude-haiku-5-5"
 TOOLS = "Read,Grep,Glob,Write"
 BLOCKED = "Bash,Edit,NotebookEdit,WebFetch,WebSearch,Task,Agent"
 
@@ -68,9 +78,10 @@ def run_one(build: Path, tier: int, task: dict, model: str, trial: int, timeout:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__)
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("build", type=Path)
-    ap.add_argument("--model", default="haiku")
+    ap.add_argument("--model", default=MODEL,
+                    help=f"model ID or alias passed to `claude --model` (default: {MODEL}, the model in the committed records)")
     ap.add_argument("--tiers", type=int, nargs="+", default=[1, 2, 3, 4])
     ap.add_argument("--tasks", nargs="*", help="task ids to run (default: all)")
     ap.add_argument("--trials", type=int, default=1)
