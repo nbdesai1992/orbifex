@@ -5,7 +5,7 @@
     python3.11 scripts/make_readme_figure.py --check   # exit 1 if the committed file is out of date
 
 Three small panels share one y axis: lookup questions, sweep questions, and the
-late-payer sweep question on its own with the invoicing-export ablation beside it.
+two late-payer sweep questions on their own with the invoicing-export ablation beside them.
 
 GitHub shows a README image on a white or a dark page and drops CSS classes and
 variables, so every color is a literal attribute chosen to read on both, the
@@ -73,7 +73,7 @@ def arrow_up(x, y_from, y_to) -> str:
 
 def render(s: dict) -> str:
     panels = [("Lookup questions", s["lookup"]), ("Sweep questions", s["sweep"]),
-              ("Late-payer sweep question", s["late"])]
+              ("Late-payer sweep questions", s["late"])]
     ablation = s["ablation"]
     tokens = [short_tokens(s["tiers"][t]["tokens"]) for t in TIERS]
     files = [f"{s['tiers'][t]['files']:,}" for t in TIERS]
@@ -83,7 +83,7 @@ def render(s: dict) -> str:
     counts = lambda key: ", ".join(str(s[key][t][0]) for t in TIERS)
     desc = (f"Three panels show runs answered correctly at workspace sizes of {', '.join(files)} files. "
             f"Lookup questions were answered correctly in {counts('lookup')} of {s['lookup'][1][1]} runs, and sweep "
-            f"questions in {counts('sweep')} of {s['sweep'][1][1]}. The late-payer sweep question alone was answered "
+            f"questions in {counts('sweep')} of {s['sweep'][1][1]}. The two late-payer sweep questions alone were answered "
             f"correctly in {counts('late')} of {s['late'][1][1]} runs, and {late_big[0]} of {late_big[1]} at the two "
             f"largest sizes became {abl[0]} of {abl[1]} when the invoicing export was deleted.")
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" '

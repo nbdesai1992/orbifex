@@ -52,6 +52,27 @@ class PublishedNumbers(unittest.TestCase):
         self.assertEqual([s["late"][t] for t in (1, 2, 3, 4)], [(6, 6), (6, 6), (1, 6), (3, 6)])
         self.assertEqual(s["ablation"], {3: (6, 6), 4: (6, 6)})
 
+    def test_late_payer_misses_and_what_came_before_the_export(self):
+        facts = results_table.facts(self.s)
+        self.assertEqual(facts["of those, on the April question and on the May question"], "5 for April and 3 for May")
+        self.assertEqual(facts["sweep runs correct outside the late-payer questions"], "71 of 72")
+        # The four-source version had no invoicing export and still gave the same wrong list twice.
+        self.assertEqual(facts["four-source version, late-payer runs wrong at the two largest sizes"],
+                         "2 of its 12 late-payer runs")
+        self.assertEqual(facts["of those, the same wrong list as an eight-source miss on the same question and size"],
+                         "2 of 2")
+        self.assertEqual(facts["lookup runs that gave one invoice's final due date"], "20 of 20")
+
+    def test_wrong_late_payer_runs_were_not_the_cheap_ones_within_a_size(self):
+        facts = results_table.facts(self.s)
+        self.assertEqual(facts["late-payer runs at size 3, mean US cents, wrong and right"],
+                         "1.73 over 5 runs and 1.29 over 1 run")
+        self.assertEqual(facts["late-payer runs at size 4, mean US cents, wrong and right"],
+                         "10.99 over 3 runs and 14.49 over 3 runs")
+        self.assertEqual(facts["costliest run of the pilot, US cents"], "28.9")
+        costliest = max(self.s["lookup_runs"] + self.s["sweep_runs"], key=lambda r: r["cost_usd"])
+        self.assertEqual((costliest["family"], costliest["tier"], costliest["correct"]), (results_table.LATE, 4, False))
+
     def test_every_record_names_one_model(self):
         self.assertEqual(self.s["model_ids"], ["claude-haiku-5-5"])
         self.assertEqual(self.s["runs"]["all"], 616)
@@ -70,8 +91,11 @@ class PublishedNumbers(unittest.TestCase):
     def test_readme_states_the_headline_numbers(self):
         facts = results_table.facts(self.s)
         for key in ("model", "runs correct, eight-source version", "lookup runs correct",
-                    "misses on the late-payer sweep question", "late-payer sweep at the two largest sizes",
-                    "the same runs with invoicing/ deleted", "growth in tokens", "tokens, smallest to largest",
+                    "misses on the two late-payer sweep questions",
+                    "of those, on the April question and on the May question",
+                    "late-payer sweep at the two largest sizes", "the same runs with invoicing/ deleted",
+                    "four-source version, late-payer runs wrong at the two largest sizes",
+                    "growth in tokens", "tokens, smallest to largest",
                     "recorded cost of the pilot", "recorded cost of the ablation",
                     "mean facts a sweep answer needs, smallest to largest", "mean facts a lookup answer needs",
                     "lookup error rate, 95% Wilson interval",

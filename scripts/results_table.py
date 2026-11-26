@@ -5,8 +5,9 @@
     python3.11 scripts/results_table.py --policies     # the two reading policies, both coverages
     python3.11 scripts/results_table.py --facts        # the headline numbers, one per line
     python3.11 scripts/results_table.py --build DIR    # with --facts: compare each miss with the wrong
-                                                       # answers the generator predicted (DIR is the
-                                                       # --out folder of `orbifex ladder --seed 7`)
+                                                       # answers the generator predicted, and count the
+                                                       # due-date lookups that faced a stale export (DIR
+                                                       # is the --out folder of `orbifex ladder --seed 7`)
 
 Nothing here is typed in by hand. Runs are counted from the JSONL files under
 experiments/results/ (one line per run), and workspace sizes and policy rates
@@ -27,7 +28,8 @@ ROOT = Path(__file__).resolve().parents[1]
 V2 = ROOT / "experiments" / "results" / "cpa-solo-seed7-v2"     # eight-source version
 V1 = ROOT / "experiments" / "results" / "cpa-solo-seed7"        # four-source version
 TIERS = (1, 2, 3, 4)
-LATE = "sweep_late"                                             # the late-payer sweep family
+DUE = "payment_status"                                          # lookups that ask for one invoice's final due date
+LATE = "sweep_late"                                             # the two late-payer sweep questions, April and May
 
 
 def runs(path: Path) -> list[dict]:
@@ -117,12 +119,14 @@ def summarize(v2: Path = V2, v1: Path = V1) -> dict:
         "policies": policies,
         "needed_facts": needed,
         "misses": misses,
+        "late_runs": late, "lookup_runs": lookup, "sweep_runs": sweep,
         "cost": {"pilot": sum(r["cost_usd"] for r in everything), "ablation": sum(r["cost_usd"] for r in ablation),
                  "all": sum(r["cost_usd"] for f in all_files for r in f)},
         "runs": {"pilot": len(everything), "ablation": len(ablation), "all": sum(len(f) for f in all_files)},
         "model_ids": sorted({m for f in all_files for r in f for m in r.get("model_ids", [])}),
         "model_args": sorted({r["model"] for f in all_files for r in f}),
         "v1": {"lookup": tally(v1_lookup), "sweep": tally(v1_sweep), "first_build": tally(v1_first),
+               "late_runs": [r for r in v1_sweep if r["family"] == LATE],
                "tasks": sum(json.loads((v1 / f"report-t{t}.json").read_text())["measure"]["environment"]["tasks"]
                             for t in TIERS)},
     }
@@ -151,8 +155,8 @@ def table(s: dict) -> str:
         ["Sources"] + [str(len(s["tiers"][t]["sources"])) for t in TIERS],
         [f"Lookup questions correct, of {n('lookup')} runs"] + [str(s["lookup"][t][0]) for t in TIERS],
         [f"Sweep questions correct, of {n('sweep')} runs"] + [str(s["sweep"][t][0]) for t in TIERS],
-        [f"Late-payer sweep question correct, of {n('late')} runs"] + [str(s["late"][t][0]) for t in TIERS],
-        ["The same question with `invoicing/` deleted, of 6 runs"]
+        [f"Late-payer sweep questions correct, of {n('late')} runs"] + [str(s["late"][t][0]) for t in TIERS],
+        ["The same questions with `invoicing/` deleted, of 6 runs"]
         + [str(s["ablation"][t][0]) if t in s["ablation"] else "not run" for t in TIERS],
         ["Mean cost of a lookup run, US cents"] + cents("lookup_cost"),
         ["Mean cost of a sweep run, US cents"] + cents("sweep_cost"),
@@ -181,6 +185,19 @@ def facts(s: dict) -> dict[str, str]:
     v1 = total(s["v1"]["lookup"])[0] + total(s["v1"]["sweep"])[0], total(s["v1"]["lookup"])[1] + total(s["v1"]["sweep"])[1]
     lo, hi = wilson(total(s["lookup"])[1] - total(s["lookup"])[0], total(s["lookup"])[1])
     p = fisher_two_sided(late_big[0], late_big[1] - late_big[0], ablated[0], ablated[1] - ablated[0])
+    month = lambda ym: sum(r["task"].endswith(ym) for r in s["misses"] if r["family"] == LATE)
+    names = lambda r: sorted((r["answer"] or {}).get("names") or [])
+    v1_late_big = [r for r in s["v1"]["late_runs"] if r["tier"] in s["ablation"]]
+    v1_wrong = [r for r in v1_late_big if not r["correct"]]
+    v2_wrong = {(r["tier"], r["task"], tuple(names(r))) for r in s["late_runs"] if not r["correct"]}
+    other_sweep = total(s["sweep"])[0] - total(s["late"])[0], total(s["sweep"])[1] - total(s["late"])[1]
+
+    def cost_by_outcome(tier: int) -> str:
+        parts = []
+        for outcome in (False, True):
+            cents = [100 * r["cost_usd"] for r in s["late_runs"] if r["tier"] == tier and r["correct"] is outcome]
+            parts.append(f"{sum(cents) / len(cents):.2f} over {len(cents)} run{'s' * (len(cents) != 1)}" if cents else "no runs")
+        return " and ".join(parts)
     return {
         "model": ", ".join(s["model_ids"]),
         "model argument passed to Claude Code": ", ".join(s["model_args"]),
@@ -188,9 +205,20 @@ def facts(s: dict) -> dict[str, str]:
         "lookup runs correct": of(total(s["lookup"])),
         "sweep runs correct": of(total(s["sweep"])),
         "misses": str(len(s["misses"])),
-        "misses on the late-payer sweep question": f"{late_misses} of the {len(s['misses'])}",
+        "misses on the two late-payer sweep questions": f"{late_misses} of the {len(s['misses'])}",
+        "of those, on the April question and on the May question": f"{month('2026-04')} for April and {month('2026-05')} for May",
+        "sweep runs correct outside the late-payer questions": of(other_sweep),
         "late-payer sweep at the two largest sizes": of(late_big),
         "the same runs with invoicing/ deleted": of(ablated),
+        "four-source version, late-payer runs wrong at the two largest sizes":
+            f"{len(v1_wrong)} of its {len(v1_late_big)} late-payer runs",
+        "of those, the same wrong list as an eight-source miss on the same question and size":
+            f"{sum((r['tier'], r['task'], tuple(names(r))) in v2_wrong for r in v1_wrong)} of {len(v1_wrong)}",
+        "late-payer runs at size 3, mean US cents, wrong and right": cost_by_outcome(3),
+        "late-payer runs at size 4, mean US cents, wrong and right": cost_by_outcome(4),
+        "costliest run of the pilot, US cents": f"{100 * max(r['cost_usd'] for r in s['lookup_runs'] + s['sweep_runs']):.1f}",
+        "lookup runs that gave one invoice's final due date": of((sum(bool(r["fields"].get("due_on")) for r in due_runs(s)),
+                                                                 len(due_runs(s)))),
         "files, smallest to largest": f"{first['files']:,} to {last['files']:,}",
         "tokens, smallest to largest": f"{first['tokens']:,} to {last['tokens']:,}",
         "growth in tokens": f"{last['tokens'] / first['tokens']:.0f} times",
@@ -208,6 +236,24 @@ def facts(s: dict) -> dict[str, str]:
         "lookup error rate, 95% Wilson interval": f"{100 * lo:.1f}% to {100 * hi:.1f}%",
         "ablation against unablated runs, Fisher exact, two-sided": f"p = {p:.3f}",
     }
+
+
+def due_runs(s: dict) -> list[dict]:
+    """The lookup runs that ask for one invoice's final due date, payment date and days late."""
+    return [r for r in s["lookup_runs"] if r["family"] == DUE]
+
+
+def lagged(s: dict, build: Path) -> str:
+    """How many of those runs had an invoicing export in the workspace that stated a superseded due date."""
+    by_tier = {}
+    for t in TIERS:
+        tasks = {x["id"]: x for x in json.loads((build / f"t{t}" / "tasks.json").read_text())}
+        stale = {c["fact"] for u in json.loads((build / f"t{t}" / "manifest.json").read_text())
+                 if u["path"] == "invoicing/invoices.csv" for c in u["claims"] if not c["current"]}
+        by_tier[t] = sum(any(f.endswith("/due") and f in stale for f in tasks[r["task"]]["facts"])
+                         for r in due_runs(s) if r["tier"] == t)
+    where = ", ".join(f"{k} at size {t}" for t, k in by_tier.items() if k)
+    return f"{sum(by_tier.values())} of {len(due_runs(s))} ({where})"
 
 
 def planted(s: dict, build: Path) -> str:
@@ -231,6 +277,7 @@ def main(argv=None) -> int:
         found = facts(s)
         if args.build:
             found["late-payer misses equal to the answer computed from original due dates"] = planted(s, args.build)
+            found["due-date lookup runs whose workspace held an export with a superseded due date"] = lagged(s, args.build)
         width = max(map(len, found))
         print("\n".join(f"{k:<{width}}  {v}" for k, v in found.items()))
     elif args.policies:
